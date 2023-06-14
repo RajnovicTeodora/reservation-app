@@ -34,6 +34,13 @@ const pages = {
                     type: 'item',
                     url: '/pages/register/register3',
                     target: true
+                },
+                {
+                    id: 'addAccomodation',
+                    title: 'Add accomoddation',
+                    type: 'item',
+                    url: '/pages/register/addAccomodation',
+                    target: true
                 }
             ]
         }
