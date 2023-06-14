@@ -11,6 +11,7 @@ import { store } from './store';
 // style + assets
 import './assets/scss/style.scss';
 import config from './config';
+import CreateAccomodation from './forms/CreateAccomodation/CreateAccomodation';
 
 // ==============================|| REACT DOM RENDER  ||============================== //
 
@@ -19,7 +20,8 @@ const root = createRoot(container); // createRoot(container!) if you use TypeScr
 root.render(
     <Provider store={store}>
         <BrowserRouter basename={config.basename}>
-            <App />
+            {/* <App /> */}
+            <CreateAccomodation/>
         </BrowserRouter>
     </Provider>
 );
