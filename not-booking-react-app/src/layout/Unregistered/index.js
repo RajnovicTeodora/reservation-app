@@ -1,4 +1,5 @@
 import React from "react";
+import { Outlet } from 'react-router-dom';
 import ParticlesBg from "particles-bg";
 
 // project imports
@@ -10,20 +11,14 @@ import {
   AppBar,
   Box,
   CssBaseline,
-  Toolbar,
-  Typography,
-  Grid,
-  CardHeader,
+  Toolbar
 } from "@mui/material";
 
 //import navigation from 'menu-items';
 import { drawerWidth } from "../../store/constant";
 
-// styles
 // constant
-const headerSX = {
-  "& .MuiCardHeader-action": { mr: 0 },
-};
+
 const Main = styled("main")(({ theme }) => ({
   ...theme.typography.mainContentTransparent,
   ...{
@@ -72,8 +67,6 @@ const Unregistered = () => {
         </Toolbar>
       </AppBar>
 
-      <ParticlesBg type="circle" bg={true} />
-
       {/* main content */}
       <Main
         sx={{
@@ -81,13 +74,9 @@ const Unregistered = () => {
           alignItems: "center",
           justifyContent: "center",
         }}
-      >
-        <Grid item>
-          <CardHeader
-            sx={{ headerSX, textAlign: "center" }}
-            title={<Typography variant="largeHeader">Welcome</Typography>}
-          />
-        </Grid>
+      >   
+      <ParticlesBg type="circle" bg={true} />     
+        <Outlet />
       </Main>
     </Box>
   );

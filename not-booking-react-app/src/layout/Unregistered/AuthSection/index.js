@@ -14,7 +14,7 @@ const AuthSection = () => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/main");
+    navigate("/login");
   };
 
   return (
