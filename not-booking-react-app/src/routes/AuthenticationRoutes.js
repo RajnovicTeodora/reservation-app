@@ -1,30 +1,33 @@
-import Unregistered from "../layout/Unregistered";
-/* import { lazy } from 'react';
+import { lazy } from "react";
 
 // project imports
-import Loadable from 'ui-component/Loadable';
-import MinimalLayout from 'layout/MinimalLayout';
+import Loadable from "../ui-component/Loadable";
+import Unregistered from "../layout/Unregistered";
 
-// login option 3 routing
-const AuthLogin3 = Loadable(lazy(() => import('views/pages/authentication/authentication3/Login3')));
-const AuthRegister3 = Loadable(lazy(() => import('views/pages/authentication/authentication3/Register3')));
-*/
+const Login = Loadable(
+  lazy(() => import("../views/shared-view/auth-forms/Login3"))
+);
+const Welcome = Loadable(lazy(() => import("../views/shared-view/Welcome")));
+
 // ==============================|| AUTHENTICATION ROUTING ||============================== //
 
 const AuthenticationRoutes = {
-    path: '/',
-    element: <Unregistered />,
-    children: [
-        {
-            path: '/pages/login/login3',
-            element: <Unregistered />
-        },
-        {
-            path: '/pages/register/register3',
-            element: <Unregistered />
-        }
-    ]
+  path: "/",
+  element: <Unregistered />,
+  children: [
+    {
+      path: "/",
+      element: <Welcome />,
+    },
+    {
+      path: "login",
+      element: <Login />,
+    },
+    {
+      path: "register",
+      element: <Unregistered />,
+    },
+  ],
 };
 
 export default AuthenticationRoutes;
- 
