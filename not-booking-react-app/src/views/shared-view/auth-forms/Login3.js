@@ -96,8 +96,8 @@ const Login = ({ ...others }) => {
             <>
               <Formik
                 initialValues={{
-                  email: "info@mailbase.com",
-                  password: "123456",
+                  email: "host@gmail.com",
+                  password: "test",
                   submit: null,
                 }}
                 validationSchema={Yup.object().shape({

@@ -7,6 +7,7 @@ import Unregistered from "../layout/Unregistered";
 const Login = Loadable(
   lazy(() => import("../views/shared-view/auth-forms/Login3"))
 );
+const Register = Loadable(lazy(() => import("../views/shared-view/auth-forms/Register")));
 const Welcome = Loadable(lazy(() => import("../views/shared-view/Welcome")));
 
 // ==============================|| AUTHENTICATION ROUTING ||============================== //
@@ -25,7 +26,7 @@ const AuthenticationRoutes = {
     },
     {
       path: "register",
-      element: <Unregistered />,
+      element: <Register />,
     },
   ],
 };

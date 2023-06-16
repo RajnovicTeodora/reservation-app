@@ -8,7 +8,7 @@ class AccomodationService {
     
     createAccomodation = async (newAccomodation) => {
       try {
-         const response = await axios.post(ENDPOINTS.BASE + ENDPOINTS.CREATE_ACCOMODATION, newAccomodation);
+         await axios.post(ENDPOINTS.BASE + ENDPOINTS.CREATE_ACCOMODATION, newAccomodation);
        } catch (error) {
          console.error(error); 
        }

@@ -17,6 +17,10 @@ const AuthSection = () => {
     navigate("/login");
   };
 
+  const handleSignUp  = () => {
+    navigate("/register");
+  };
+
   return (
     <>
       <Button
@@ -41,6 +45,7 @@ const AuthSection = () => {
           },
         }}
         startIcon={<IconUserPlus />}
+        onClick={handleSignUp}
       >
         Sign Up
       </Button>
