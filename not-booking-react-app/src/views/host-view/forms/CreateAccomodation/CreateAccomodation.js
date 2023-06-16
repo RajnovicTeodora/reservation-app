@@ -29,7 +29,7 @@ const CreateAccomodation = ({ ...others }) => {
   const theme = useTheme();
   let navigate = useNavigate();
   const scriptedRef = useScriptRef();
-  const [listPhotos, setListPhotos] = useState([]);
+  //const [listPhotos, setListPhotos] = useState([]);
   const [selectedPhotos, setSelectedPhotos] = useState([]);
 
   const handleFileChange = (event) => {
@@ -50,6 +50,7 @@ const CreateAccomodation = ({ ...others }) => {
           street: "",
           number: "",
           city: "",
+          listPhotos: [],
           submit: null
         }}
         validationSchema={Yup.object().shape({
@@ -66,7 +67,7 @@ const CreateAccomodation = ({ ...others }) => {
                let fileReader = new FileReader();
                fileReader.readAsDataURL(photo);
                fileReader.onload = (event) => {
-               listPhotos.push(event.target.result);      
+               values.listPhotos.push(event.target.result);      
               }
              
             });
@@ -76,13 +77,13 @@ const CreateAccomodation = ({ ...others }) => {
             minGuest: values.minGuest,
             automaticApproal: values.automaticApproal,
             benefits: values.benefits,
-            listPhotos:listPhotos,
+            listPhotos: values.listPhotos,
             addres: {
               street: values.street,
               number: values.number,
               city: values.city}
             }
-            const request = accomoddationService.createAccomodation(newAccomodation).then(
+            accomoddationService.createAccomodation(newAccomodation).then(
               () => {
                 navigate("/main");
                 window.location.reload();
