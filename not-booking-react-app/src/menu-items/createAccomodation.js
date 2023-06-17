@@ -17,9 +17,9 @@ const createAccomodation = {
             type: 'item',
             url: '/main/host/createAccomodation',
             icon: icons.IconDashboard,
-            breadcrumbs: false
+            breadcrumbs: false,
         },
-    ]
+    ],
 };
 
 export default createAccomodation;
