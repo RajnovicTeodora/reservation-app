@@ -1,4 +1,4 @@
-import CreateAccomodation  from "../views/host-view/forms/CreateAccomodation/CreateAccomodation";
+import CreateAccomodation from '../views/host-view/forms/CreateAccomodation/CreateAccomodation';
 
 // ==============================|| AUTHENTICATION ROUTING ||============================== //
 
@@ -8,10 +8,9 @@ const AccomodationRoutes = {
     children: [
         {
             path: '/pages/accomodation/createAccomodation',
-            element: <CreateAccomodation />
-        }
-    ]
+            element: <CreateAccomodation />,
+        },
+    ],
 };
 
 export default AccomodationRoutes;
- 
