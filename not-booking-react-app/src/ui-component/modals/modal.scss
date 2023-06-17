@@ -1,6 +1,6 @@
 .custom-modal {
   min-width: 640px;
-  min-height: 160px;
+  min-height: 160px !important;
   vertical-align: middle;
   padding: 1.5rem;
   max-width: 32rem;
@@ -78,7 +78,7 @@
 .custom-text-modal {
   text-align: left;
   margin-left: 1rem;
-  margin-top: -1.25rem;
+  margin-top: 0.25rem;
 }
 
 .custom-text {

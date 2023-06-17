@@ -47,11 +47,43 @@ const deleteAccount = () => {
   });
 };
 
+const getUserInfo = () => {
+  const headers = AuthService.authHeader(false);
+  let email = JSON.parse(localStorage.getItem("user")).email;
+  return axios.get(API_URL + "getUserInfo/" + email, {
+    headers: headers,
+  });
+};
+
+const editUser = (newdata) => {
+  const headers = AuthService.authHeader(true);
+  let email = JSON.parse(localStorage.getItem("user")).email;
+  return axios.post(API_URL + "editUser/" + email, newdata, {
+    headers: headers,
+  });
+};
+
+const updateUser = (newInfo) => {
+  const oldData = JSON.parse(localStorage.getItem("user"));
+  const data = {
+    accessToken: oldData.accessToken,
+    username: newInfo.username,
+    expiresIn: oldData.expiresIn,
+    userType: oldData.userType,
+    email: newInfo.email,
+    fullName: newInfo.name + " " + newInfo.surname,
+  };
+  localStorage.setItem("user", JSON.stringify(data));
+};
+
 const UserService = {
   stringToColor,
   stringAvatar,
   changeNotification,
   deleteAccount,
+  getUserInfo,
+  editUser,
+  updateUser,
 };
 
 export default UserService;

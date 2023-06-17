@@ -25,8 +25,12 @@ import {useState} from 'react';
 
 import { useNavigate } from "react-router-dom";
 
+import { Message } from "rsuite";
+import { useToaster } from "rsuite/toaster";
+
 const CreateAccomodation = ({ ...others }) => {
   const theme = useTheme();
+  const toaster = useToaster();
   let navigate = useNavigate();
   const scriptedRef = useScriptRef();
   //const [listPhotos, setListPhotos] = useState([]);
@@ -89,8 +93,13 @@ const CreateAccomodation = ({ ...others }) => {
                 window.location.reload();
               },
               (error) => {
-                console.log(error);
                 const resMessage = error.response.data;
+                toaster.push(
+                  <Message showIcon type="error" closable>
+                    {resMessage}
+                  </Message>,
+                  { placement: "topEnd" }
+                );
 
                 setStatus({ success: false });
                 setErrors({ submit: resMessage });

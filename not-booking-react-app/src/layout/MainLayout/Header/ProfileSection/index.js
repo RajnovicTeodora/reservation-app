@@ -40,10 +40,14 @@ import UserService from "../../../../services/user.service";
 
 import { useModal } from "react-simple-modal-provider";
 
+import { Message } from "rsuite";
+import { useToaster } from "rsuite/toaster";
+
 // ==============================|| PROFILE MENU ||============================== //
 
 const ProfileSection = () => {
   const theme = useTheme();
+  const toaster = useToaster();
   const customization = useSelector((state) => state.customization);
   const navigate = useNavigate();
   const { open: openModal2 } = useModal("DeleteUserModal");
@@ -58,16 +62,24 @@ const ProfileSection = () => {
   const anchorRef = useRef(null);
 
   const handleLogout = async () => {
-    console.log("Logout");
     AuthService.logout().then(
       () => {
         navigate("/");
-        window.location.reload();
+        toaster.push(
+          <Message showIcon type="success">
+            Successfully logged out!
+          </Message>,
+          { placement: "topEnd" }
+        );
       },
       (error) => {
-        console.log(error);
         const resMessage = error.response.data;
-        console.log(resMessage);
+        toaster.push(
+          <Message showIcon type="error" closable>
+            {resMessage}
+          </Message>,
+          { placement: "topEnd" }
+        );
       }
     );
   };
@@ -76,12 +88,21 @@ const ProfileSection = () => {
     setNotification(checked);
     UserService.changeNotification(user.email).then(
       (response) => {
-        console.log(response);
+        toaster.push(
+          <Message showIcon type="success">
+            {response.data}
+          </Message>,
+          { placement: "topEnd" }
+        );
       },
       (error) => {
-        console.log(error);
         const resMessage = error.response.data;
-        console.log(resMessage);
+        toaster.push(
+          <Message showIcon type="error" closable>
+            {resMessage}
+          </Message>,
+          { placement: "topEnd" }
+        );
       }
     );
   };

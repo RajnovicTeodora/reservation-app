@@ -127,10 +127,8 @@ const Login = ({ ...others }) => {
                           { placement: "topEnd" }
                         );
                         navigate("/main");
-                        window.location.reload();
                       },
                       (error) => {
-                        console.log(error);
                         const resMessage = error.response.data;
                         toaster.push(
                           <Message showIcon type="error" closable>

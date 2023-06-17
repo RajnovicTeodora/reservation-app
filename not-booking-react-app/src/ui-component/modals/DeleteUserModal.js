@@ -8,8 +8,11 @@ import UserService from "../../services/user.service";
 import AuthService from "../../services/auth.service";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { Message } from "rsuite";
+import { useToaster } from "rsuite/toaster";
 
 const DeleteUserModal = ({ children }) => {
+  const toaster = useToaster();
   const [isOpen, setOpen] = useModalState();
   const [user] = useState(JSON.parse(localStorage.getItem("user")));
   const navigate = useNavigate();
@@ -17,23 +20,35 @@ const DeleteUserModal = ({ children }) => {
   const handleDelete = () => {
     UserService.deleteAccount(user.email).then(
       (response) => {
-        console.log(response);
         AuthService.logout().then(
           () => {
+            toaster.push(
+              <Message showIcon type="success">
+                Successfully deleted account!
+              </Message>,
+              { placement: "topEnd" }
+            );
             navigate("/");
-            window.location.reload();
           },
           (error) => {
-            console.log(error);
             const resMessage = error.response.data;
-            console.log(resMessage);
+            toaster.push(
+              <Message showIcon type="error" closable>
+                {resMessage}
+              </Message>,
+              { placement: "topEnd" }
+            );
           }
         );
       },
       (error) => {
-        console.log(error);
         const resMessage = error.response.data;
-        console.log(resMessage);
+        toaster.push(
+          <Message showIcon type="error" closable>
+            {resMessage}
+          </Message>,
+          { placement: "topEnd" }
+        );
       }
     );
   };

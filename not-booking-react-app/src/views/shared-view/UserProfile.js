@@ -1,6 +1,4 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 // material-ui
 import { useTheme } from "@mui/material/styles";
@@ -9,15 +7,10 @@ import {
   Button,
   Divider,
   FormControl,
-  FormControlLabel,
   FormHelperText,
   Grid,
-  IconButton,
-  InputAdornment,
   InputLabel,
   OutlinedInput,
-  Radio,
-  RadioGroup,
   Stack,
   Typography,
   useMediaQuery,
@@ -28,50 +21,55 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 
 // project imports
-import AuthCardWrapper from "../auth-forms/AuthCardWrapper";
-import Logo from "../../../ui-component/Logo";
+import AuthCardWrapper from "./auth-forms/AuthCardWrapper";
 
 // project imports
-import useScriptRef from "../../../hooks/useScriptRef";
-import AnimateButton from "../../../ui-component/extended/AnimateButton";
-import AuthService from "../../../services/auth.service";
-
-// assets
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import useScriptRef from "../../hooks/useScriptRef";
+import AnimateButton from "../../ui-component/extended/AnimateButton";
+import UserService from "../../services/user.service";
 
 import { Message } from "rsuite";
 import { useToaster } from "rsuite/toaster";
 
 // ================================|| AUTH3 - REGISTER  ||================================ //
 
-const Register = ({ ...others }) => {
+const UserProfile = ({ ...others }) => {
   const theme = useTheme();
   const toaster = useToaster();
-  let navigate = useNavigate();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
 
   const scriptedRef = useScriptRef();
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [user, setUserInfo] = useState({
+    username: "username",
+    name: "name",
+    surname: "surname",
+    email: "email",
+    country: "country",
+    city: "city",
+    street: "street",
+    streetNum: 0,
+  });
 
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
+  useEffect(() => {
+    UserService.getUserInfo().then((response) => {
+      setUserInfo({
+        username: response.data.username,
+        name: response.data.name,
+        surname: response.data.surname,
+        email: response.data.email,
+        country: response.data.country,
+        city: response.data.city,
+        street: response.data.street,
+        streetNum: response.data.streetNum,
+      });
+    });
+  }, []);
 
   return (
-    <Grid item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
+    <Grid item sx={{ m: { xs: 1, sm: 3 }, mb: 0, textAlign: "-webkit-center" }}>
       <AuthCardWrapper>
         <Grid container spacing={2} alignItems="center" justifyContent="center">
-          <Grid item sx={{ mb: 3 }}>
-            <Link to="#">
-              <Logo />
-            </Link>
-          </Grid>
           <Grid item xs={12}>
             <Grid
               container
@@ -86,7 +84,7 @@ const Register = ({ ...others }) => {
                     gutterBottom
                     variant={matchDownSM ? "h3" : "h2"}
                   >
-                    Welcome To Registration
+                    User Profile
                   </Typography>
                 </Stack>
               </Grid>
@@ -95,17 +93,16 @@ const Register = ({ ...others }) => {
           <Grid item xs={12}>
             <>
               <Formik
+                enableReinitialize
                 initialValues={{
-                  email: "",
-                  password: "",
-                  username: "",
-                  name: "",
-                  surname: "",
-                  country: "",
-                  city: "",
-                  street: "",
-                  streetNum: "",
-                  role: "",
+                  email: user.email,
+                  username: user.username,
+                  name: user.name,
+                  surname: user.surname,
+                  country: user.country,
+                  city: user.city,
+                  street: user.street,
+                  streetNum: user.streetNum,
                   submit: null,
                 }}
                 validationSchema={Yup.object().shape({
@@ -113,9 +110,6 @@ const Register = ({ ...others }) => {
                     .email("Must be a valid email")
                     .max(255)
                     .required("Email is required"),
-                  password: Yup.string()
-                    .max(255)
-                    .required("Password is required"),
                   surname: Yup.string()
                     .max(255)
                     .required("Surname is required"),
@@ -123,7 +117,6 @@ const Register = ({ ...others }) => {
                   username: Yup.string()
                     .max(255)
                     .required("Username is required"),
-                  role: Yup.string().max(5).required("Role is required"),
                   country: Yup.string()
                     .max(255)
                     .required("Country is required"),
@@ -133,31 +126,31 @@ const Register = ({ ...others }) => {
                     .min(1)
                     .required("Street num is required"),
                 })}
-                onSubmit={async (
+                onSubmit={(
                   values,
                   { setErrors, setStatus, setSubmitting }
                 ) => {
                   try {
-                    AuthService.register(
-                      values.username,
-                      values.password,
-                      values.name,
-                      values.surname,
-                      values.email,
-                      values.role,
-                      values.country,
-                      values.city,
-                      values.street,
-                      values.streetNum
-                    ).then(
+                    const data ={
+                      username: values.username,
+                      name: values.name,
+                      surname: values.surname,
+                      email: values.email,
+                      country: values.country,
+                      city: values.city,
+                      street: values.street,
+                      streetNum: values.streetNum,
+                    };
+                    UserService.editUser(data).then(
                       (response) => {
+                        UserService.updateUser(response.data);
                         toaster.push(
                           <Message showIcon type="success">
-                            Successfully created an account!
+                            Successfully updated account!
                           </Message>,
                           { placement: "topEnd" }
                         );
-                        navigate("/login");
+                        window.location.reload();
                       },
                       (error) => {
                         const resMessage = error.response.data;
@@ -197,6 +190,13 @@ const Register = ({ ...others }) => {
                   values,
                 }) => (
                   <form noValidate onSubmit={handleSubmit} {...others}>
+                    <Typography
+                      variant="caption"
+                      fontSize="16px"
+                      textAlign={matchDownSM ? "left" : "inherit"}
+                    >
+                      User Information
+                    </Typography>
                     <Grid container spacing={matchDownSM ? 0 : 2}>
                       <Grid item xs={12} sm={6}>
                         <FormControl
@@ -288,55 +288,6 @@ const Register = ({ ...others }) => {
                       <Grid item xs={12} sm={6}>
                         <FormControl
                           fullWidth
-                          error={Boolean(touched.password && errors.password)}
-                          sx={{ ...theme.typography.customInput }}
-                        >
-                          <InputLabel htmlFor="outlined-adornment-password-register">
-                            Password
-                          </InputLabel>
-                          <OutlinedInput
-                            id="outlined-adornment-password-register"
-                            type={showPassword ? "text" : "password"}
-                            value={values.password}
-                            name="password"
-                            label="Password"
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                            endAdornment={
-                              <InputAdornment position="end">
-                                <IconButton
-                                  aria-label="toggle password visibility"
-                                  onClick={handleClickShowPassword}
-                                  onMouseDown={handleMouseDownPassword}
-                                  edge="end"
-                                  size="large"
-                                >
-                                  {showPassword ? (
-                                    <Visibility />
-                                  ) : (
-                                    <VisibilityOff />
-                                  )}
-                                </IconButton>
-                              </InputAdornment>
-                            }
-                            inputProps={{}}
-                          />
-                          {touched.password && errors.password && (
-                            <FormHelperText
-                              error
-                              id="standard-weight-helper-text-password-register"
-                            >
-                              {errors.password}
-                            </FormHelperText>
-                          )}
-                        </FormControl>
-                      </Grid>
-                    </Grid>
-
-                    <Grid container spacing={matchDownSM ? 0 : 2}>
-                      <Grid item xs={12} sm={6}>
-                        <FormControl
-                          fullWidth
                           error={Boolean(touched.username && errors.username)}
                           sx={{ ...theme.typography.customInput }}
                         >
@@ -362,49 +313,15 @@ const Register = ({ ...others }) => {
                           )}
                         </FormControl>
                       </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <FormControl
-                          fullWidth
-                          error={Boolean(touched.role && errors.role)}
-                          sx={{ ...theme.typography.customInput }}
-                        >
-                          <InputLabel
-                            htmlFor="outlined-adornment-role-register"
-                            style={{ display: "contents" }}
-                          >
-                            User Type{" "}
-                          </InputLabel>
-                          <RadioGroup
-                            id="outlined-adornment-role-register"
-                            name="role"
-                            onChange={handleChange}
-                            value={values.role}
-                            onBlur={handleBlur}
-                            row
-                          >
-                            <FormControlLabel
-                              value="HOST"
-                              control={<Radio />}
-                              label="Host"
-                            />
-                            <FormControlLabel
-                              value="GUEST"
-                              control={<Radio />}
-                              label="Guest"
-                            />
-                          </RadioGroup>
-                          {touched.role && errors.role && (
-                            <FormHelperText
-                              error
-                              id="standard-weight-helper-text--register"
-                            >
-                              {errors.role}
-                            </FormHelperText>
-                          )}
-                        </FormControl>
-                      </Grid>
                     </Grid>
                     <Grid item xs={12}>
+                      <Typography
+                        variant="caption"
+                        fontSize="16px"
+                        textAlign={matchDownSM ? "left" : "inherit"}
+                      >
+                        Address Information
+                      </Typography>
                       <Divider />
                     </Grid>
                     <Grid container spacing={matchDownSM ? 0 : 2}>
@@ -541,7 +458,7 @@ const Register = ({ ...others }) => {
                           variant="contained"
                           color="secondary"
                         >
-                          Sign up
+                          Save Changes
                         </Button>
                       </AnimateButton>
                     </Box>
@@ -556,4 +473,4 @@ const Register = ({ ...others }) => {
   );
 };
 
-export default Register;
+export default UserProfile;

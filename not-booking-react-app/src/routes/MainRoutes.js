@@ -9,6 +9,7 @@ const CreateAccomodation = Loadable(
     import("../views/host-view/forms/CreateAccomodation/CreateAccomodation")
   )
 );
+const UserProfile = Loadable(lazy(() => import("../views/shared-view/UserProfile")));
 
 const MainRoutes = {
   path: "/main",
@@ -22,6 +23,10 @@ const MainRoutes = {
           element: <CreateAccomodation />,
         },
       ],
+    },
+    {
+      path: "profile",
+      element: <UserProfile />,
     },
   ],
 };
