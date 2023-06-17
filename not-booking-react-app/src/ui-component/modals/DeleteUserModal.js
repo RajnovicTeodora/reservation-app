@@ -61,7 +61,7 @@ const DeleteUserModal = ({ children }) => {
       setOpen={setOpen}
       duration={250}
       animation={modalAnimation.scaleUp}
-      draggable={true}
+      draggable={false}
     >
       <div className="custom-modal">
         <div className="custom-x-button-modal">
@@ -79,18 +79,19 @@ const DeleteUserModal = ({ children }) => {
           </div>
           <div className="custom-text-modal">
             <h3 className="custom-text">Warning</h3>
-            <p style={{ color: 'rgba(107,114,128,var(1))', fontSize: '0.875rem', lineHeight: '1.25rem' }}>
-            Are you sure you want to delete your account?
-            </p>  
+            <p
+              style={{
+                color: "rgba(107,114,128,var(1))",
+                fontSize: "0.875rem",
+                lineHeight: "1.25rem",
+              }}
+            >
+              Are you sure you want to delete your account?
+            </p>
           </div>
-          
-          
         </div>
-        <div style={{textAlignLast: 'right'}}>
-          <button
-            onClick={handleDelete}
-            className="ok-button"
-          >
+        <div style={{ textAlignLast: "right" }}>
+          <button onClick={handleDelete} className="ok-button">
             Yes
           </button>
           <button

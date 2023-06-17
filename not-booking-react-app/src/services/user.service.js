@@ -76,6 +76,20 @@ const updateUser = (newInfo) => {
   localStorage.setItem("user", JSON.stringify(data));
 };
 
+const changePassword = (oldPass, newPass) => {   
+  const headers = AuthService.authHeader(true);
+  let email = JSON.parse(localStorage.getItem("user")).email;
+  return axios.post(
+    API_URL + "changePassword",
+    {
+      email,
+      oldPass,
+      newPass,
+    },
+    { headers: headers }
+  );
+};
+
 const UserService = {
   stringToColor,
   stringAvatar,
@@ -84,6 +98,7 @@ const UserService = {
   getUserInfo,
   editUser,
   updateUser,
+  changePassword,
 };
 
 export default UserService;

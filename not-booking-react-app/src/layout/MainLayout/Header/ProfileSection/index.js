@@ -33,7 +33,7 @@ import MainCard from "../../../../ui-component/cards/MainCard";
 import Transitions from "../../../../ui-component/extended/Transitions";
 
 // assets
-import { IconLogout, IconSettings, IconUser } from "@tabler/icons";
+import { IconKey, IconLogout, IconSettings, IconUser } from "@tabler/icons";
 
 import AuthService from "../../../../services/auth.service";
 import UserService from "../../../../services/user.service";
@@ -51,6 +51,7 @@ const ProfileSection = () => {
   const customization = useSelector((state) => state.customization);
   const navigate = useNavigate();
   const { open: openModal2 } = useModal("DeleteUserModal");
+  const { open: openChangePassword } = useModal("ChangePasswordModal");
 
   const [notification, setNotification] = useState(true);
   const [selectedIndex, setSelectedIndex] = useState(-1);
@@ -315,8 +316,26 @@ const ProfileSection = () => {
                             borderRadius: `${customization.borderRadius}px`,
                           }}
                           selected={selectedIndex === 1}
+                          onClick={openChangePassword}
+                        >
+                          <ListItemIcon>
+                            <IconKey stroke={3.5} size="1.3rem" />
+                          </ListItemIcon>
+                          <ListItemText
+                            primary={
+                              <Typography variant="subtitle1">
+                                Change Password
+                              </Typography>
+                            }
+                          />
+                        </ListItemButton>
+                        <ListItemButton
+                          sx={{
+                            borderRadius: `${customization.borderRadius}px`,
+                          }}
+                          selected={selectedIndex === 2}
                           onClick={(event) =>
-                            handleListItemClick(event, 1, "/main/profile")
+                            handleListItemClick(event, 2, "/main/profile")
                           }
                         >
                           <ListItemIcon>
@@ -342,7 +361,7 @@ const ProfileSection = () => {
                           sx={{
                             borderRadius: `${customization.borderRadius}px`,
                           }}
-                          selected={selectedIndex === 4}
+                          selected={selectedIndex === 3}
                           onClick={handleLogout}
                         >
                           <ListItemIcon>
