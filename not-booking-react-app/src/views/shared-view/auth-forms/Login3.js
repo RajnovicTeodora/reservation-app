@@ -37,10 +37,14 @@ import AuthService from "../../../services/auth.service";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
+import { Message } from "rsuite";
+import { useToaster } from "rsuite/toaster";
+
 // ================================|| AUTH3 - LOGIN ||================================ //
 
 const Login = ({ ...others }) => {
   const theme = useTheme();
+  const toaster = useToaster();
   let navigate = useNavigate();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -116,12 +120,24 @@ const Login = ({ ...others }) => {
                   try {
                     AuthService.login(values.email, values.password).then(
                       () => {
+                        toaster.push(
+                          <Message showIcon type="success">
+                            Successfully logged in!
+                          </Message>,
+                          { placement: "topEnd" }
+                        );
                         navigate("/main");
                         window.location.reload();
                       },
                       (error) => {
                         console.log(error);
                         const resMessage = error.response.data;
+                        toaster.push(
+                          <Message showIcon type="error" closable>
+                            {resMessage}
+                          </Message>,
+                          { placement: "topEnd" }
+                        );
 
                         setStatus({ success: false });
                         setErrors({ submit: resMessage });

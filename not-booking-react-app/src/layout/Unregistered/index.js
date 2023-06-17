@@ -58,12 +58,13 @@ const Unregistered = () => {
         color="inherit"
         elevation={0}
         sx={{
+          zIndex: 0,
           bgcolor: theme.palette.background.default,
           transition: "none",
         }}
       >
         <Toolbar>
-          <UHeader />
+          <UHeader/>
         </Toolbar>
       </AppBar>
 

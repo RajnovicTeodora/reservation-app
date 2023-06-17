@@ -8,6 +8,7 @@ import { Box } from "@mui/material";
 import LogoSection from "../../MainLayout/LogoSection";
 import SearchSection from "../../MainLayout/Header/SearchSection";
 import AuthSection from "../AuthSection";
+import zIndex from "@mui/material/styles/zIndex";
 
 const UHeader = () => {
   const theme = useTheme();
