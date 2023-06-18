@@ -8,6 +8,7 @@ import App from './App';
 
 // style + assets
 import './assets/scss/style.scss';
+import 'rsuite/dist/rsuite.min.css';
 import config from './config';
 import { Provider } from 'react-redux';
 import { store } from './store';

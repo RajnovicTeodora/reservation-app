@@ -1,22 +1,17 @@
-// assets
-import { IconDashboard } from '@tabler/icons';
-
-// constant
-const icons = { IconDashboard };
+import { IconHomePlus } from '@tabler/icons';
 
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
 
 const createAccomodation = {
     id: 'createAccomodation',
-    title: 'Create accomodation',
     type: 'group',
     children: [
         {
-            id: '',
+            id: 'default',
             title: 'Create Accomodation',
             type: 'item',
             url: '/main/accommodations/create',
-            icon: icons.IconDashboard,
+            icon: IconHomePlus,
             breadcrumbs: false,
         },
     ],

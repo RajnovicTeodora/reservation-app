@@ -16,6 +16,9 @@ import { SET_MENU } from '../../store/actions';
 // assets
 import { IconChevronRight } from '@tabler/icons';
 
+import { ModalProvider } from 'react-simple-modal-provider';
+import modals from '../../ui-component/modals/index';
+
 // styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     ({ theme, open }) => ({
@@ -75,42 +78,45 @@ const MainLayout = () => {
     };
 
     return (
-        <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
-            {/* header */}
-            <AppBar
-                enableColorOnDark
-                position="fixed"
-                color="inherit"
-                elevation={0}
-                sx={{
-                    bgcolor: theme.palette.background.default,
-                    transition: leftDrawerOpened ? theme.transitions.create('width') : 'none',
-                }}
-            >
-                <Toolbar>
-                    <Header handleLeftDrawerToggle={handleLeftDrawerToggle} />
-                </Toolbar>
-            </AppBar>
+        <ModalProvider value={modals}>
+            <Box sx={{ display: 'flex' }}>
+                <CssBaseline />
+                {/* header */}
+                <AppBar
+                    enableColorOnDark
+                    position="fixed"
+                    color="inherit"
+                    elevation={0}
+                    sx={{
+                        zIndex: 0,
+                        bgcolor: theme.palette.background.default,
+                        transition: leftDrawerOpened ? theme.transitions.create('width') : 'none',
+                    }}
+                >
+                    <Toolbar>
+                        <Header handleLeftDrawerToggle={handleLeftDrawerToggle} />
+                    </Toolbar>
+                </AppBar>
 
-            {/* drawer */}
-            <Sidebar
-                drawerOpen={!matchDownMd ? leftDrawerOpened : !leftDrawerOpened}
-                drawerToggle={handleLeftDrawerToggle}
-            />
-
-            {/* main content */}
-            <Main theme={theme} open={leftDrawerOpened}>
-                {/* breadcrumb */}
-                <Breadcrumbs
-                    separator={IconChevronRight}
-                    /*navigation={navigation}*/ icon
-                    title
-                    rightAlign
+                {/* drawer */}
+                <Sidebar
+                    drawerOpen={!matchDownMd ? leftDrawerOpened : !leftDrawerOpened}
+                    drawerToggle={handleLeftDrawerToggle}
                 />
-                <Outlet />
-            </Main>
-        </Box>
+
+                {/* main content */}
+                <Main theme={theme} open={leftDrawerOpened}>
+                    {/* breadcrumb */}
+                    <Breadcrumbs
+                        separator={IconChevronRight}
+                        /*navigation={navigation}*/ icon
+                        title
+                        rightAlign
+                    />
+                    <Outlet />
+                </Main>
+            </Box>
+        </ModalProvider>
     );
 };
 
