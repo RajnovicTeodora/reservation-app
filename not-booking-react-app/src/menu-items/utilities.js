@@ -6,7 +6,7 @@ const icons = {
     IconTypography,
     IconPalette,
     IconShadow,
-    IconWindmill
+    IconWindmill,
 };
 
 // ==============================|| UTILITIES MENU ITEMS ||============================== //
@@ -22,7 +22,7 @@ const utilities = {
             type: 'item',
             url: '/utils/util-typography',
             icon: icons.IconTypography,
-            breadcrumbs: false
+            breadcrumbs: false,
         },
         {
             id: 'util-color',
@@ -30,7 +30,7 @@ const utilities = {
             type: 'item',
             url: '/utils/util-color',
             icon: icons.IconPalette,
-            breadcrumbs: false
+            breadcrumbs: false,
         },
         {
             id: 'util-shadow',
@@ -38,7 +38,7 @@ const utilities = {
             type: 'item',
             url: '/utils/util-shadow',
             icon: icons.IconShadow,
-            breadcrumbs: false
+            breadcrumbs: false,
         },
         {
             id: 'icons',
@@ -51,18 +51,18 @@ const utilities = {
                     title: 'Tabler Icons',
                     type: 'item',
                     url: '/icons/tabler-icons',
-                    breadcrumbs: false
+                    breadcrumbs: false,
                 },
                 {
                     id: 'material-icons',
                     title: 'Material Icons',
                     type: 'item',
                     url: '/icons/material-icons',
-                    breadcrumbs: false
-                }
-            ]
-        }
-    ]
+                    breadcrumbs: false,
+                },
+            ],
+        },
+    ],
 };
 
 export default utilities;

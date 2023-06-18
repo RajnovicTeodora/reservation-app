@@ -35,7 +35,7 @@ const AnimateButton = forwardRef(({ children, type, direction, offset, scale }, 
                         repeat: Infinity,
                         repeatType: 'loop',
                         duration: 2,
-                        repeatDelay: 0
+                        repeatDelay: 0,
                     }}
                 >
                     {children}
@@ -55,7 +55,12 @@ const AnimateButton = forwardRef(({ children, type, direction, offset, scale }, 
                 );
             }
             return (
-                <motion.div ref={ref} animate={{ x: x !== undefined ? x : '' }} onHoverEnd={() => cycleX()} onHoverStart={() => cycleX()}>
+                <motion.div
+                    ref={ref}
+                    animate={{ x: x !== undefined ? x : '' }}
+                    onHoverEnd={() => cycleX()}
+                    onHoverStart={() => cycleX()}
+                >
                     {children}
                 </motion.div>
             );
@@ -65,11 +70,15 @@ const AnimateButton = forwardRef(({ children, type, direction, offset, scale }, 
             if (typeof scale === 'number') {
                 scale = {
                     hover: scale,
-                    tap: scale
+                    tap: scale,
                 };
             }
             return (
-                <motion.div ref={ref} whileHover={{ scale: scale?.hover }} whileTap={{ scale: scale?.tap }}>
+                <motion.div
+                    ref={ref}
+                    whileHover={{ scale: scale?.hover }}
+                    whileTap={{ scale: scale?.tap }}
+                >
                     {children}
                 </motion.div>
             );
@@ -81,7 +90,7 @@ AnimateButton.propTypes = {
     offset: PropTypes.number,
     type: PropTypes.oneOf(['slide', 'scale', 'rotate']),
     direction: PropTypes.oneOf(['up', 'down', 'left', 'right']),
-    scale: PropTypes.oneOfType([PropTypes.number, PropTypes.object])
+    scale: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
 };
 
 AnimateButton.defaultProps = {
@@ -90,8 +99,8 @@ AnimateButton.defaultProps = {
     direction: 'right',
     scale: {
         hover: 1,
-        tap: 0.9
-    }
+        tap: 0.9,
+    },
 };
 
 export default AnimateButton;
