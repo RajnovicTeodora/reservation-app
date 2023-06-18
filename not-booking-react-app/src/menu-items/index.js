@@ -6,7 +6,7 @@ import createAccomodation from './createAccomodation';
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {
-    items: [dashboard, pages, utilities, other, createAccomodation]
+    items: [dashboard, pages, utilities, other, createAccomodation],
 };
 
 export default menuItems;

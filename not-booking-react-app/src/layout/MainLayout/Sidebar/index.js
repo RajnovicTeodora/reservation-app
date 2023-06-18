@@ -32,7 +32,7 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
                     style={{
                         height: !matchUpMd ? 'calc(100vh - 56px)' : 'calc(100vh - 88px)',
                         paddingLeft: '16px',
-                        paddingRight: '16px'
+                        paddingRight: '16px',
                     }}
                 >
                     <MenuList />
@@ -49,7 +49,11 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
     const container = window !== undefined ? () => window.document.body : undefined;
 
     return (
-        <Box component="nav" sx={{ flexShrink: { md: 0 }, width: matchUpMd ? drawerWidth : 'auto' }} aria-label="mailbox folders">
+        <Box
+            component="nav"
+            sx={{ flexShrink: { md: 0 }, width: matchUpMd ? drawerWidth : 'auto' }}
+            aria-label="mailbox folders"
+        >
             <Drawer
                 container={container}
                 variant={matchUpMd ? 'persistent' : 'temporary'}
@@ -63,9 +67,9 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
                         color: theme.palette.text.primary,
                         borderRight: 'none',
                         [theme.breakpoints.up('md')]: {
-                            top: '88px'
-                        }
-                    }
+                            top: '88px',
+                        },
+                    },
                 }}
                 ModalProps={{ keepMounted: true }}
                 color="inherit"
@@ -79,7 +83,7 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
 Sidebar.propTypes = {
     drawerOpen: PropTypes.bool,
     drawerToggle: PropTypes.func,
-    window: PropTypes.object
+    window: PropTypes.object,
 };
 
 export default Sidebar;

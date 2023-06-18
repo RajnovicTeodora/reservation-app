@@ -29,4 +29,6 @@ const App = () => {
     );
 };
 
+App.displayName = 'not-booking';
+
 export default App;
