@@ -3,14 +3,9 @@ import UnavilabilityAccomodationTabel from '../views/host-view/tabels/Unavilabil
 // ==============================|| AUTHENTICATION ROUTING ||============================== //
 
 const UnavilabilityRoutes = {
-    path: '/',
+    path: '/temp/nesto',
     element: <UnavilabilityAccomodationTabel />,
-    children: [
-        {
-            path: '/pages/unavilability/unavilabilityTable',
-            element: <UnavilabilityAccomodationTabel />,
-        },
-    ],
+    children: [],
 };
 
 export default UnavilabilityRoutes;

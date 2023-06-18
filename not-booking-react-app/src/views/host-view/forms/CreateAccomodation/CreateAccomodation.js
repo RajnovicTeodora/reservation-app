@@ -90,9 +90,8 @@ const CreateAccomodation = ({ ...others }) => {
                                 window.location.reload();
                             },
                             (error) => {
-                                const resMessage = error.response.data;
                                 setStatus({ success: false });
-                                setErrors({ submit: resMessage });
+                                setErrors({ submit: error.response.data });
                                 setSubmitting(false);
                             }
                         );
@@ -102,7 +101,6 @@ const CreateAccomodation = ({ ...others }) => {
                             setSubmitting(false);
                         }
                     } catch (err) {
-                        console.error(err);
                         if (scriptedRef.current) {
                             setStatus({ success: false });
                             setErrors({ submit: err.message });

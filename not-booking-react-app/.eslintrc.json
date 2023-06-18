@@ -17,6 +17,7 @@
     },
     "plugins": ["react", "@typescript-eslint", "prettier"],
     "rules": {
+        "react/prop-types": "off",
         "no-unused-vars": 2,
         "no-undef": 2,
         "@typescript-eslint/no-explicit-any": "warn",

@@ -1,5 +1,6 @@
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
+import { useState } from 'react';
 import {
     Avatar,
     Button,
@@ -19,7 +20,7 @@ import {
 
 // assets
 import { IconBrandTelegram, IconBuildingStore, IconMailbox, IconPhoto } from '@tabler/icons';
-import User1 from '../../../../assets/images/users/user-round.svg';
+import UserService from '../../../../services/user.service';
 
 // styles
 const ListItemWrapper = styled('div')(({ theme }) => ({
@@ -37,6 +38,7 @@ const ListItemWrapper = styled('div')(({ theme }) => ({
 
 const NotificationList = () => {
     const theme = useTheme();
+    const [user] = useState(JSON.parse(localStorage.getItem('user')));
 
     const chipSX = {
         height: 24,
@@ -86,7 +88,7 @@ const NotificationList = () => {
             <ListItemWrapper>
                 <ListItem alignItems="center">
                     <ListItemAvatar>
-                        <Avatar alt="John Doe" src={User1} />
+                        <Avatar alt={user.fullName} {...UserService.stringAvatar(user.fullName)} />
                     </ListItemAvatar>
                     <ListItemText primary="John Doe" />
                     <ListItemSecondaryAction>
@@ -215,7 +217,7 @@ const NotificationList = () => {
             <ListItemWrapper>
                 <ListItem alignItems="center">
                     <ListItemAvatar>
-                        <Avatar alt="John Doe" src={User1} />
+                        <Avatar alt={user.fullName} {...UserService.stringAvatar(user.fullName)} />
                     </ListItemAvatar>
                     <ListItemText primary={<Typography variant="subtitle1">John Doe</Typography>} />
                     <ListItemSecondaryAction>
@@ -267,7 +269,7 @@ const NotificationList = () => {
             <ListItemWrapper>
                 <ListItem alignItems="center">
                     <ListItemAvatar>
-                        <Avatar alt="John Doe" src={User1} />
+                        <Avatar alt={user.fullName} {...UserService.stringAvatar(user.fullName)} />
                     </ListItemAvatar>
                     <ListItemText primary={<Typography variant="subtitle1">John Doe</Typography>} />
                     <ListItemSecondaryAction>

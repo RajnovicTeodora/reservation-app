@@ -13,6 +13,7 @@ const PriceTable = Loadable(lazy(() => import('../views/host-view/tabels/PriceTa
 const CreateAccomodation = Loadable(
     lazy(() => import('../views/host-view/forms/CreateAccomodation/CreateAccomodation'))
 );
+const UserProfile = Loadable(lazy(() => import('../views/shared-view/UserProfile')));
 
 const MainRoutes = {
     path: '/main',
@@ -40,19 +41,18 @@ const MainRoutes = {
             path: 'host',
             children: [
                 {
-                    path: 'unavilabilityTable',
+                    path: 'un',
                     element: <UnavilabilityAccomodationTabel />,
                 },
-            ],
-        },
-        {
-            path: 'host',
-            children: [
                 {
                     path: 'pricesTable',
                     element: <PriceTable />,
                 },
             ],
+        },
+        {
+            path: 'profile',
+            element: <UserProfile />,
         },
     ],
 };
