@@ -3,7 +3,7 @@ import { lazy } from 'react';
 // project imports
 import Loadable from '../ui-component/Loadable';
 import Unregistered from '../layout/Unregistered';
-import AccommodationsView from '../views/accommodaton-view/AccommodationsView';
+import AccommodationsView from '../views/shared-view/accommodation-view/AccommodationsView';
 
 const Login = Loadable(lazy(() => import('../views/shared-view/auth-forms/Login3')));
 const Register = Loadable(lazy(() => import('../views/shared-view/auth-forms/Register')));

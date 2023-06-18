@@ -2,8 +2,8 @@ import MainLayout from '../layout/MainLayout';
 import { lazy } from 'react';
 
 import Loadable from '../ui-component/Loadable.js';
-import AccommodationView from '../accommodation/accommodation/AccommodationView';
-import AccommodationsView from '../views/accommodaton-view/AccommodationsView';
+import AccommodationView from '../accommodation/accommodation-view/AccommodationView';
+import AccommodationsView from '../views/shared-view/accommodation-view/AccommodationsView';
 
 // ==============================|| MAIN ROUTING ||============================== //
 const CreateAccomodation = Loadable(
