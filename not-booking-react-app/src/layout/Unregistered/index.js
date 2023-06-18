@@ -1,5 +1,4 @@
 import { Outlet } from 'react-router-dom';
-import ParticlesBg from 'particles-bg';
 
 // project imports
 import UHeader from './UHeader';
@@ -69,7 +68,6 @@ const Unregistered = () => {
                     justifyContent: 'center',
                 }}
             >
-                <ParticlesBg type="circle" bg={true} />
                 <Outlet />
             </Main>
         </Box>
