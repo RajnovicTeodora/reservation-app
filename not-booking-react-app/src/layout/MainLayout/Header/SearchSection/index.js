@@ -3,7 +3,16 @@ import { useState } from 'react';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
-import { Avatar, Box, ButtonBase, Card, Grid, InputAdornment, OutlinedInput, Popper } from '@mui/material';
+import {
+    Avatar,
+    Box,
+    ButtonBase,
+    Card,
+    Grid,
+    InputAdornment,
+    OutlinedInput,
+    Popper,
+} from '@mui/material';
 
 // third-party
 import PopupState, { bindPopper, bindToggle } from 'material-ui-popup-state';
@@ -22,8 +31,8 @@ const PopperStyle = styled(Popper, { shouldForwardProp })(({ theme }) => ({
     top: '-55px !important',
     padding: '0 12px',
     [theme.breakpoints.down('sm')]: {
-        padding: '0 10px'
-    }
+        padding: '0 10px',
+    },
 }));
 
 const OutlineInputStyle = styled(OutlinedInput, { shouldForwardProp })(({ theme }) => ({
@@ -33,16 +42,16 @@ const OutlineInputStyle = styled(OutlinedInput, { shouldForwardProp })(({ theme 
     paddingRight: 16,
     '& input': {
         background: 'transparent !important',
-        paddingLeft: '4px !important'
+        paddingLeft: '4px !important',
     },
     [theme.breakpoints.down('lg')]: {
-        width: 250
+        width: 250,
     },
     [theme.breakpoints.down('md')]: {
         width: '100%',
         marginLeft: 4,
-        background: '#fff'
-    }
+        background: '#fff',
+    },
 }));
 
 const HeaderAvatarStyle = styled(Avatar, { shouldForwardProp })(({ theme }) => ({
@@ -52,8 +61,8 @@ const HeaderAvatarStyle = styled(Avatar, { shouldForwardProp })(({ theme }) => (
     color: theme.palette.secondary.dark,
     '&:hover': {
         background: theme.palette.secondary.dark,
-        color: theme.palette.secondary.light
-    }
+        color: theme.palette.secondary.light,
+    },
 }));
 
 // ==============================|| SEARCH INPUT - MOBILE||============================== //
@@ -90,8 +99,8 @@ const MobileSearch = ({ value, setValue, popupState }) => {
                                     color: theme.palette.orange.dark,
                                     '&:hover': {
                                         background: theme.palette.orange.dark,
-                                        color: theme.palette.orange.light
-                                    }
+                                        color: theme.palette.orange.light,
+                                    },
                                 }}
                                 {...bindToggle(popupState)}
                             >
@@ -110,7 +119,7 @@ const MobileSearch = ({ value, setValue, popupState }) => {
 MobileSearch.propTypes = {
     value: PropTypes.string,
     setValue: PropTypes.func,
-    popupState: PopupState
+    popupState: PopupState,
 };
 
 // ==============================|| SEARCH INPUT ||============================== //
@@ -127,7 +136,10 @@ const SearchSection = () => {
                         <>
                             <Box sx={{ ml: 2 }}>
                                 <ButtonBase sx={{ borderRadius: '12px' }}>
-                                    <HeaderAvatarStyle variant="rounded" {...bindToggle(popupState)}>
+                                    <HeaderAvatarStyle
+                                        variant="rounded"
+                                        {...bindToggle(popupState)}
+                                    >
                                         <IconSearch stroke={1.5} size="1.2rem" />
                                     </HeaderAvatarStyle>
                                 </ButtonBase>
@@ -135,20 +147,32 @@ const SearchSection = () => {
                             <PopperStyle {...bindPopper(popupState)} transition>
                                 {({ TransitionProps }) => (
                                     <>
-                                        <Transitions type="zoom" {...TransitionProps} sx={{ transformOrigin: 'center left' }}>
+                                        <Transitions
+                                            type="zoom"
+                                            {...TransitionProps}
+                                            sx={{ transformOrigin: 'center left' }}
+                                        >
                                             <Card
                                                 sx={{
                                                     background: '#fff',
                                                     [theme.breakpoints.down('sm')]: {
                                                         border: 0,
-                                                        boxShadow: 'none'
-                                                    }
+                                                        boxShadow: 'none',
+                                                    },
                                                 }}
                                             >
                                                 <Box sx={{ p: 2 }}>
-                                                    <Grid container alignItems="center" justifyContent="space-between">
+                                                    <Grid
+                                                        container
+                                                        alignItems="center"
+                                                        justifyContent="space-between"
+                                                    >
                                                         <Grid item xs>
-                                                            <MobileSearch value={value} setValue={setValue} popupState={popupState} />
+                                                            <MobileSearch
+                                                                value={value}
+                                                                setValue={setValue}
+                                                                popupState={popupState}
+                                                            />
                                                         </Grid>
                                                     </Grid>
                                                 </Box>

@@ -17,9 +17,9 @@ const priceTable = {
             type: 'item',
             url: '/main/host/pricesTable',
             icon: icons.IconDashboard,
-            breadcrumbs: false
+            breadcrumbs: false,
         },
-    ]
+    ],
 };
 
 export default priceTable;

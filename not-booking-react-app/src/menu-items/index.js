@@ -9,7 +9,7 @@ import priceTable from './priceTable';
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {
-    items: [dashboard, pages, utilities, other, createAccomodation, unavilabilityTable, priceTable]
+    items: [dashboard, pages, utilities, other, createAccomodation, unavilabilityTable, priceTable],
 };
 
 export default menuItems;

@@ -15,11 +15,11 @@ const createAccomodation = {
             id: '',
             title: 'Create Accomodation',
             type: 'item',
-            url: '/main/host/createAccomodation',
+            url: '/main/accommodations/create',
             icon: icons.IconDashboard,
-            breadcrumbs: false
+            breadcrumbs: false,
         },
-    ]
+    ],
 };
 
 export default createAccomodation;

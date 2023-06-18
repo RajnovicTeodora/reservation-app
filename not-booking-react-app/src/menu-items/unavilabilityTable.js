@@ -17,9 +17,9 @@ const unavilabilityTable = {
             type: 'item',
             url: '/main/host/unavilabilityTable',
             icon: icons.IconDashboard,
-            breadcrumbs: false
+            breadcrumbs: false,
         },
-    ]
+    ],
 };
 
 export default unavilabilityTable;

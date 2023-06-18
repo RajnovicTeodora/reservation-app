@@ -1,4 +1,4 @@
-import UnavilabilityAccomodationTabel  from "../views/host-view/tabels/UnavilabilityAccomodationTabel";
+import UnavilabilityAccomodationTabel from '../views/host-view/tabels/UnavilabilityAccomodationTabel';
 
 // ==============================|| AUTHENTICATION ROUTING ||============================== //
 
@@ -8,10 +8,9 @@ const UnavilabilityRoutes = {
     children: [
         {
             path: '/pages/unavilability/unavilabilityTable',
-            element: <UnavilabilityAccomodationTabel />
-        }
-    ]
+            element: <UnavilabilityAccomodationTabel />,
+        },
+    ],
 };
 
 export default UnavilabilityRoutes;
- 

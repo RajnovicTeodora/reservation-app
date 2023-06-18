@@ -1,4 +1,4 @@
-import PriceTable  from "../views/host-view/tabels/PriceTable";
+import PriceTable from '../views/host-view/tabels/PriceTable';
 
 // ==============================|| AUTHENTICATION ROUTING ||============================== //
 
@@ -8,9 +8,9 @@ const PriceRoutes = {
     children: [
         {
             path: '/pages/price/pricesTable',
-            element: <PriceTable />
-        }
-    ]
+            element: <PriceTable />,
+        },
+    ],
 };
 
 export default PriceRoutes;
