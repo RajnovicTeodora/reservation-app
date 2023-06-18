@@ -1,5 +1,5 @@
 import './AccommodationCard.scss';
-import { Accommodation } from '../../shared/model/accommodation';
+import { Accommodation } from '../../../../shared/model/accommodation';
 import { Card } from 'react-bootstrap';
 import CardHeader from 'react-bootstrap/esm/CardHeader';
 import { FaInfo } from 'react-icons/fa';

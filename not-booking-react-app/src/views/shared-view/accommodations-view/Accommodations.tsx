@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { accommodationService } from '../../../../services/accommodationServie';
-import AccommodationCard from '../../../../accommodation/accommodation-card/AccommodationCard';
-import { Accommodation } from '../../../../shared/model/accommodation';
+import { accommodationService } from '../../../services/accommodationServie';
+import AccommodationCard from './accommodation-card/AccommodationCard';
+import { Accommodation } from '../../../shared/model/accommodation';
 import './Accommodations.scss';
 
 export default function Accommodations() {

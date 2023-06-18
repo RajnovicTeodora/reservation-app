@@ -2,8 +2,8 @@ import MainLayout from '../layout/MainLayout';
 import { lazy } from 'react';
 
 import Loadable from '../ui-component/Loadable.js';
-import AccommodationView from '../accommodation/accommodation-view/AccommodationView';
-import AccommodationsView from '../views/shared-view/accommodation-view/AccommodationsView';
+import Accommodations from '../views/shared-view/accommodations-view/Accommodations';
+import AccommodationView from '../views/shared-view/accommodations-view/accommodation-view/AccommodationView';
 
 // ==============================|| MAIN ROUTING ||============================== //
 const CreateAccomodation = Loadable(
@@ -19,7 +19,7 @@ const MainRoutes = {
             children: [
                 {
                     path: 'all',
-                    element: <AccommodationsView />,
+                    element: <Accommodations />,
                 },
                 {
                     path: ':id',

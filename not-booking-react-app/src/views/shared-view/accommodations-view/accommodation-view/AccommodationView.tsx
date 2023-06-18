@@ -1,8 +1,8 @@
 import './AccommodationView.scss';
-import { Accommodation } from '../../shared/model/accommodation';
+import { Accommodation } from '../../../../shared/model/accommodation';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { accommodationService } from '../../services/accommodationServie';
+import { accommodationService } from '../../../../services/accommodationServie';
 
 function AccommodationView() {
     const params = useParams();
