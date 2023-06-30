@@ -29,7 +29,6 @@ const UnavilabilityAccomodationTabel = () => {
         const fetchData = async () => {
             try {
                 const response = await unavilailityService.getListUnavilabilityByAccomodationId();
-                console.log(response);
                 setRows(response.data);
             } catch (error) {
                 console.error(error);
