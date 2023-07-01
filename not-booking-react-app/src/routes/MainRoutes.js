@@ -6,6 +6,10 @@ import Accommodations from '../views/shared-view/accommodations-view/Accommodati
 import AccommodationView from '../views/shared-view/accommodations-view/accommodation-view/AccommodationView';
 
 // ==============================|| MAIN ROUTING ||============================== //
+const UnavilabilityAccomodationTabel = Loadable(
+    lazy(() => import('../views/host-view/tabels/UnavilabilityAccomodationTabel'))
+);
+const PriceTable = Loadable(lazy(() => import('../views/host-view/tabels/PriceTable')));
 const CreateAccomodation = Loadable(
     lazy(() => import('../views/host-view/forms/CreateAccomodation/CreateAccomodation'))
 );
@@ -29,6 +33,20 @@ const MainRoutes = {
                 {
                     path: 'create',
                     element: <CreateAccomodation />,
+                },
+            ],
+        },
+
+        {
+            path: 'host',
+            children: [
+                {
+                    path: 'un',
+                    element: <UnavilabilityAccomodationTabel />,
+                },
+                {
+                    path: 'pricesTable',
+                    element: <PriceTable />,
                 },
             ],
         },
