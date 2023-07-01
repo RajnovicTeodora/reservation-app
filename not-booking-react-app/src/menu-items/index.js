@@ -6,6 +6,7 @@ import createAccomodation from './createAccomodation';
 import unavilabilityTable from './unavilabilityTable';
 
 import priceTable from './priceTable';
+
 import createRequest from './createRequest';
 import requestTable from './requestTable';
 // ==============================|| MENU ITEMS ||============================== //
