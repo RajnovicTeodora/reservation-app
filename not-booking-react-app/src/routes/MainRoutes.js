@@ -4,6 +4,8 @@ import { lazy } from 'react';
 import Loadable from '../ui-component/Loadable.js';
 import Accommodations from '../views/shared-view/accommodations-view/Accommodations';
 import AccommodationView from '../views/shared-view/accommodations-view/accommodation-view/AccommodationView';
+import CreateRequest from '../views/guest-view/forms/CreateRequest';
+import TableRequestPage from '../views/guest-view/pages/TableRequestsPage';
 
 // ==============================|| MAIN ROUTING ||============================== //
 const UnavilabilityAccomodationTabel = Loadable(
@@ -47,6 +49,14 @@ const MainRoutes = {
                 {
                     path: 'pricesTable',
                     element: <PriceTable />,
+                },
+                {
+                    path: 'request',
+                    element: <CreateRequest />,
+                },
+                {
+                    path: 'trp',
+                    element: <TableRequestPage />,
                 },
             ],
         },
