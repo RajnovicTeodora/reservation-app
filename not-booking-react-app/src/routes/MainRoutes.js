@@ -6,6 +6,7 @@ import Accommodations from '../views/shared-view/accommodations-view/Accommodati
 import AccommodationView from '../views/shared-view/accommodations-view/accommodation-view/AccommodationView';
 import CreateRequest from '../views/guest-view/forms/CreateRequest';
 import RequestsForApprovingPage from '../views/host-view/pages/RequestsForApprovingPage';
+//import TableRequestPage from '../views/guest-view/pages/TableRequestsPage';
 
 // ==============================|| MAIN ROUTING ||============================== //
 const UnavilabilityAccomodationTabel = Loadable(
