@@ -4,6 +4,9 @@ const ENDPOINTS = {
     CREATE_REQUEST: 'addRequest',
     GET_BY_USER_ID: 'getByUserId/',
     DELETE_REQUEST: 'deleteRequest/',
+    GET_BY_ACCOMODATION_ID: 'getRequestsByAccomodationId/',
+    DECLINE_REQUEST: 'declineRequest/',
+    APPROVE_REQUEST: 'approveRequest/',
 };
 
 class RequestService {
@@ -25,6 +28,28 @@ class RequestService {
     getListRequestByGostId = async (id) => {
         try {
             return await axios.get(ENDPOINTS.BASE + ENDPOINTS.GET_BY_USER_ID + id);
+        } catch (error) {
+            return error;
+        }
+    };
+    getListRequestByAccomodationId = async (id) => {
+        try {
+            return await axios.get(ENDPOINTS.BASE + ENDPOINTS.GET_BY_ACCOMODATION_ID + id);
+        } catch (error) {
+            return error;
+        }
+    };
+    approveRequest = async (id) => {
+        try {
+            return await axios.put(ENDPOINTS.BASE + ENDPOINTS.APPROVE_REQUEST + id);
+        } catch (error) {
+            return error;
+        }
+    };
+
+    declineRequest = async (id) => {
+        try {
+            return await axios.put(ENDPOINTS.BASE + ENDPOINTS.DECLINE_REQUEST + id);
         } catch (error) {
             return error;
         }

@@ -5,7 +5,7 @@ import Loadable from '../ui-component/Loadable.js';
 import Accommodations from '../views/shared-view/accommodations-view/Accommodations';
 import AccommodationView from '../views/shared-view/accommodations-view/accommodation-view/AccommodationView';
 import CreateRequest from '../views/guest-view/forms/CreateRequest';
-import TableRequestPage from '../views/guest-view/pages/TableRequestsPage';
+import RequestsForApprovingPage from '../views/host-view/pages/RequestsForApprovingPage';
 
 // ==============================|| MAIN ROUTING ||============================== //
 const UnavilabilityAccomodationTabel = Loadable(
@@ -56,7 +56,7 @@ const MainRoutes = {
                 },
                 {
                     path: 'trp',
-                    element: <TableRequestPage />,
+                    element: <RequestsForApprovingPage />,
                 },
             ],
         },

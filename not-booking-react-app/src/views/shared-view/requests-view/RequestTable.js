@@ -38,8 +38,19 @@ const RequestTable = ({ rows, isByGuest }) => {
                 //todo neka poruka
             });
         } else if (dialogText == 'Are you sure you want to approve this request?') {
-            //todo approve drugi feature
+            requestService.approveRequest(requestId).then((res) => {
+                if (res.data != null) {
+                    navigate('/'); //todo mozda negde drugo
+                }
+                //todo neka poruka
+            });
         } else {
+            requestService.declineRequest(requestId).then((res) => {
+                if (res.data) {
+                    navigate('/');
+                }
+                //todo neka poruka
+            });
             //reject approve drugi feature
         }
         setOpen(false);
@@ -131,7 +142,8 @@ const RequestTable = ({ rows, isByGuest }) => {
                                             color="secondary"
                                             onClick={() => {
                                                 handleOpen(
-                                                    'Are you sure you want to approve this request?'
+                                                    'Are you sure you want to approve this request?',
+                                                    row.id
                                                 );
                                             }}
                                         >
@@ -144,7 +156,8 @@ const RequestTable = ({ rows, isByGuest }) => {
                                             color="warning"
                                             onClick={() => {
                                                 handleOpen(
-                                                    'Are you sure you want to rejuct this request?'
+                                                    'Are you sure you want to rejuct this request?',
+                                                    row.id
                                                 );
                                             }}
                                         >
