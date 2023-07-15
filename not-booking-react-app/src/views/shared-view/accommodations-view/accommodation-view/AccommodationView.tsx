@@ -24,17 +24,26 @@ function AccommodationView() {
             <div className="listing-details">
                 <h2>{accommodation.name}</h2>
                 <p>{accommodation.description}</p>
-
                 <div className="address">
-                    <span>{accommodation.address}</span>
+                    <p>Address</p>
+                    <div className="info-item">
+                        <span className="label">Street:</span>
+                        <span className="value">{accommodation.address.street}</span>
+                    </div>
+                    <div className="info-item">
+                        <span className="label">City:</span>
+                        <span className="value">{accommodation.address.city}</span>
+                    </div>
+                    <div className="info-item">
+                        <span className="label">Country:</span>
+                        <span className="value">{accommodation.address.country}</span>
+                    </div>
                 </div>
-
                 <div className="photos">
                     {accommodation.photos.map((photo, index) => (
                         <img src={photo} alt={`Photo ${index + 1}`} key={index} />
                     ))}
                 </div>
-
                 <div className="benefits">
                     <h3>Benefits:</h3>
                     <ul>
@@ -43,19 +52,16 @@ function AccommodationView() {
                         ))}
                     </ul>
                 </div>
-
                 <div className="guests">
                     <span>
                         Guests: {accommodation.minGuests} - {accommodation.maxGuests}
                     </span>
                 </div>
-
                 <div className="approval">
                     <span>
                         {accommodation.automaticApproval ? 'Automatic Approval' : 'Manual Approval'}
                     </span>
                 </div>
-
                 <div className="score">
                     <span>Average Score: {accommodation.averageScore}</span>
                 </div>

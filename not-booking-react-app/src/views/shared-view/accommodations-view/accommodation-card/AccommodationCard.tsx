@@ -25,6 +25,10 @@ function AccommodationCard(props: { accommodation: Accommodation }) {
                 >
                     <Truncate lines={4}>{accommodation.description}</Truncate>
                 </Typography>
+                <Typography>
+                    {accommodation.address.country}, {accommodation.address.city},{' '}
+                    {accommodation.address.street}
+                </Typography>
             </CardContent>
             <CardActions className="accommodation-card__actions" disableSpacing>
                 <Link to={url}>

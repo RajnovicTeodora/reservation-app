@@ -1,9 +1,10 @@
+import { Address } from './address';
 import { DefaultModel } from './default-model';
 
 export class Accommodation extends DefaultModel {
     name: string;
     description: string;
-    address: string; // Todo maybe place the information inside a class
+    address: Address;
     photos: string[];
     benefits: string[];
     maxGuests: number;
@@ -17,7 +18,7 @@ export class Accommodation extends DefaultModel {
         deleted: boolean,
         name: string,
         description: string,
-        address: string,
+        address: Address,
         photos: string[],
         benefits: string[],
         maxGuests: number,
