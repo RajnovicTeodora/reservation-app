@@ -9,7 +9,7 @@ class AccomodationService {
         try {
             await axios.post(ENDPOINTS.BASE + ENDPOINTS.CREATE_ACCOMODATION, newAccomodation);
         } catch (error) {
-            console.error(error);
+            return error;
         }
     };
 }

@@ -2,19 +2,19 @@ import { IconHomePlus } from '@tabler/icons';
 
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
 
-const createAccomodation = {
-    id: 'createAccomodation',
+const createRequest = {
+    id: 'createRequest',
     type: 'group',
     children: [
         {
             id: 'default',
-            title: 'Create Accomodation',
+            title: 'request ',
             type: 'item',
-            url: '/main/accommodations/create',
+            url: '/main/request/create',
             icon: IconHomePlus,
             breadcrumbs: false,
         },
     ],
 };
 
-export default createAccomodation;
+export default createRequest;

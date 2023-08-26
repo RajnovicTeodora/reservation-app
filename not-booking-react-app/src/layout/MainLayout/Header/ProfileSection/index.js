@@ -14,12 +14,10 @@ import {
     ClickAwayListener,
     Divider,
     Grid,
-    InputAdornment,
     List,
     ListItemButton,
     ListItemIcon,
     ListItemText,
-    OutlinedInput,
     Paper,
     Popper,
     Stack,
@@ -33,30 +31,81 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 // project imports
 import MainCard from '../../../../ui-component/cards/MainCard';
 import Transitions from '../../../../ui-component/extended/Transitions';
-import User1 from '../../../../assets/images/users/user-round.svg';
 
 // assets
-import { IconLogout, IconSearch, IconSettings, IconUser } from '@tabler/icons';
+import { IconKey, IconLogout, IconSettings, IconUser } from '@tabler/icons';
+
+import AuthService from '../../../../services/auth.service';
+import UserService from '../../../../services/user.service';
+
+import { useModal } from 'react-simple-modal-provider';
+
+import { Message } from 'rsuite';
+import { useToaster } from 'rsuite/toaster';
 
 // ==============================|| PROFILE MENU ||============================== //
 
 const ProfileSection = () => {
     const theme = useTheme();
+    const toaster = useToaster();
     const customization = useSelector((state) => state.customization);
     const navigate = useNavigate();
+    const { open: openModal2 } = useModal('DeleteUserModal');
+    const { open: openChangePassword } = useModal('ChangePasswordModal');
 
-    const [sdm, setSdm] = useState(true);
-    const [value, setValue] = useState('');
-    const [notification, setNotification] = useState(false);
+    const [notification, setNotification] = useState(true);
     const [selectedIndex, setSelectedIndex] = useState(-1);
     const [open, setOpen] = useState(false);
+    const [user] = useState(JSON.parse(localStorage.getItem('user')));
     /**
      * anchorRef is used on different componets and specifying one type leads to other components throwing an error
      * */
     const anchorRef = useRef(null);
+
     const handleLogout = async () => {
-        console.log('Logout');
-        navigate('/');
+        AuthService.logout().then(
+            () => {
+                navigate('/');
+                toaster.push(
+                    <Message showIcon type="success">
+                        Successfully logged out!
+                    </Message>,
+                    { placement: 'topEnd' }
+                );
+            },
+            (error) => {
+                const resMessage = error.response.data;
+                toaster.push(
+                    <Message showIcon type="error" closable>
+                        {resMessage}
+                    </Message>,
+                    { placement: 'topEnd' }
+                );
+            }
+        );
+    };
+
+    const handleNotification = (checked) => {
+        setNotification(checked);
+        UserService.changeNotification(user.email).then(
+            (response) => {
+                toaster.push(
+                    <Message showIcon type="success">
+                        {response.data}
+                    </Message>,
+                    { placement: 'topEnd' }
+                );
+            },
+            (error) => {
+                const resMessage = error.response.data;
+                toaster.push(
+                    <Message showIcon type="error" closable>
+                        {resMessage}
+                    </Message>,
+                    { placement: 'topEnd' }
+                );
+            }
+        );
     };
 
     const handleClose = (event) => {
@@ -111,7 +160,7 @@ const ProfileSection = () => {
                 }}
                 icon={
                     <Avatar
-                        src={User1}
+                        {...UserService.stringAvatar(user.fullName)}
                         sx={{
                             ...theme.typography.mediumAvatar,
                             margin: '8px 0 8px 8px !important',
@@ -175,35 +224,15 @@ const ProfileSection = () => {
                                                     variant="h4"
                                                     sx={{ fontWeight: 400 }}
                                                 >
-                                                    Johne Doe
+                                                    {user.fullName}
                                                 </Typography>
                                             </Stack>
                                             <Typography variant="subtitle2">
-                                                Project Admin
+                                                {user.userType}
                                             </Typography>
                                         </Stack>
-                                        <OutlinedInput
-                                            sx={{ width: '100%', pr: 1, pl: 2, my: 2 }}
-                                            id="input-search-profile"
-                                            value={value}
-                                            onChange={(e) => setValue(e.target.value)}
-                                            placeholder="Search profile options"
-                                            startAdornment={
-                                                <InputAdornment position="start">
-                                                    <IconSearch
-                                                        stroke={1.5}
-                                                        size="1rem"
-                                                        color={theme.palette.grey[500]}
-                                                    />
-                                                </InputAdornment>
-                                            }
-                                            aria-describedby="search-helper-text"
-                                            inputProps={{
-                                                'aria-label': 'weight',
-                                            }}
-                                        />
-                                        <Divider />
                                     </Box>
+                                    <Divider />
                                     <PerfectScrollbar
                                         style={{
                                             height: '100%',
@@ -229,31 +258,6 @@ const ProfileSection = () => {
                                                             >
                                                                 <Grid item>
                                                                     <Typography variant="subtitle1">
-                                                                        Start DND Mode
-                                                                    </Typography>
-                                                                </Grid>
-                                                                <Grid item>
-                                                                    <Switch
-                                                                        color="primary"
-                                                                        checked={sdm}
-                                                                        onChange={(e) =>
-                                                                            setSdm(e.target.checked)
-                                                                        }
-                                                                        name="sdm"
-                                                                        size="small"
-                                                                    />
-                                                                </Grid>
-                                                            </Grid>
-                                                        </Grid>
-                                                        <Grid item>
-                                                            <Grid
-                                                                item
-                                                                container
-                                                                alignItems="center"
-                                                                justifyContent="space-between"
-                                                            >
-                                                                <Grid item>
-                                                                    <Typography variant="subtitle1">
                                                                         Allow Notifications
                                                                     </Typography>
                                                                 </Grid>
@@ -261,7 +265,7 @@ const ProfileSection = () => {
                                                                     <Switch
                                                                         checked={notification}
                                                                         onChange={(e) =>
-                                                                            setNotification(
+                                                                            handleNotification(
                                                                                 e.target.checked
                                                                             )
                                                                         }
@@ -296,13 +300,7 @@ const ProfileSection = () => {
                                                         borderRadius: `${customization.borderRadius}px`,
                                                     }}
                                                     selected={selectedIndex === 0}
-                                                    onClick={(event) =>
-                                                        handleListItemClick(
-                                                            event,
-                                                            0,
-                                                            '/user/account-profile/profile1'
-                                                        )
-                                                    }
+                                                    onClick={openModal2}
                                                 >
                                                     <ListItemIcon>
                                                         <IconSettings stroke={3.5} size="1.3rem" />
@@ -310,7 +308,7 @@ const ProfileSection = () => {
                                                     <ListItemText
                                                         primary={
                                                             <Typography variant="subtitle1">
-                                                                Account Settings
+                                                                Delete Account
                                                             </Typography>
                                                         }
                                                     />
@@ -320,11 +318,29 @@ const ProfileSection = () => {
                                                         borderRadius: `${customization.borderRadius}px`,
                                                     }}
                                                     selected={selectedIndex === 1}
+                                                    onClick={openChangePassword}
+                                                >
+                                                    <ListItemIcon>
+                                                        <IconKey stroke={3.5} size="1.3rem" />
+                                                    </ListItemIcon>
+                                                    <ListItemText
+                                                        primary={
+                                                            <Typography variant="subtitle1">
+                                                                Change Password
+                                                            </Typography>
+                                                        }
+                                                    />
+                                                </ListItemButton>
+                                                <ListItemButton
+                                                    sx={{
+                                                        borderRadius: `${customization.borderRadius}px`,
+                                                    }}
+                                                    selected={selectedIndex === 2}
                                                     onClick={(event) =>
                                                         handleListItemClick(
                                                             event,
-                                                            1,
-                                                            '/user/social-profile/posts'
+                                                            2,
+                                                            '/main/profile'
                                                         )
                                                     }
                                                 >
@@ -340,21 +356,8 @@ const ProfileSection = () => {
                                                             >
                                                                 <Grid item>
                                                                     <Typography variant="subtitle1">
-                                                                        Social Profile
+                                                                        User Profile
                                                                     </Typography>
-                                                                </Grid>
-                                                                <Grid item>
-                                                                    <Chip
-                                                                        label="02"
-                                                                        size="small"
-                                                                        sx={{
-                                                                            bgcolor:
-                                                                                theme.palette
-                                                                                    .warning.dark,
-                                                                            color: theme.palette
-                                                                                .background.default,
-                                                                        }}
-                                                                    />
                                                                 </Grid>
                                                             </Grid>
                                                         }
@@ -364,7 +367,7 @@ const ProfileSection = () => {
                                                     sx={{
                                                         borderRadius: `${customization.borderRadius}px`,
                                                     }}
-                                                    selected={selectedIndex === 4}
+                                                    selected={selectedIndex === 3}
                                                     onClick={handleLogout}
                                                 >
                                                     <ListItemIcon>
