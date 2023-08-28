@@ -18,14 +18,15 @@ import { Formik } from 'formik';
 // project imports
 import useScriptRef from '../../../../hooks/useScriptRef';
 import AnimateButton from '../../../../ui-component/extended/AnimateButton';
-
 //services
 import accomoddationService from '../../../../services/AccomoddationService';
 import { useState } from 'react';
-
 import { useNavigate } from 'react-router-dom';
+import { Message } from 'rsuite';
+import { useToaster } from 'rsuite/toaster';
 
 const CreateAccomodation = ({ ...others }) => {
+    const toaster = useToaster();
     const theme = useTheme();
     let navigate = useNavigate();
     const scriptedRef = useScriptRef();
@@ -36,6 +37,7 @@ const CreateAccomodation = ({ ...others }) => {
         const files = Array.from(event.target.files);
         setSelectedPhotos(files);
     };
+    const username = localStorage.user.username;
 
     return (
         <>
@@ -51,6 +53,7 @@ const CreateAccomodation = ({ ...others }) => {
                     city: '',
                     listPhotos: [],
                     submit: null,
+                    username: username,
                 }}
                 validationSchema={Yup.object().shape({
                     name: Yup.string().min(2).required('Name is required'),
@@ -86,6 +89,12 @@ const CreateAccomodation = ({ ...others }) => {
                         };
                         accomoddationService.createAccomodation(newAccomodation).then(
                             () => {
+                                toaster.push(
+                                    <Message showIcon type="success">
+                                        Successfully added accommodation!
+                                    </Message>,
+                                    { placement: 'topEnd' }
+                                );
                                 navigate('/main');
                                 window.location.reload();
                             },
@@ -93,6 +102,13 @@ const CreateAccomodation = ({ ...others }) => {
                                 setStatus({ success: false });
                                 setErrors({ submit: error.response.data });
                                 setSubmitting(false);
+                                const resMessage = error.response.data;
+                                toaster.push(
+                                    <Message showIcon type="error" closable>
+                                        {resMessage}
+                                    </Message>,
+                                    { placement: 'topEnd' }
+                                );
                             }
                         );
 

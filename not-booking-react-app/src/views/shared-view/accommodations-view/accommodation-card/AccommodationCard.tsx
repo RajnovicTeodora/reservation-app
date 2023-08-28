@@ -9,7 +9,6 @@ import { Link } from 'react-router-dom';
 
 function AccommodationCard(props: { accommodation: Accommodation }) {
     const { accommodation } = props;
-
     const url = '/main/accommodations/' + accommodation.id;
 
     return (

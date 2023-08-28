@@ -1,6 +1,6 @@
 import axios from 'axios';
 const ENDPOINTS = {
-    BASE: 'http://localhost:8080/api/request/',
+    BASE: 'http://localhost:8082/api/request/',
     CREATE_REQUEST: 'addRequest',
     GET_BY_USER_ID: 'getByUserId/',
     DELETE_REQUEST: 'deleteRequest/',

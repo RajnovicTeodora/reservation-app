@@ -1,21 +1,34 @@
 import { useState, useEffect } from 'react';
 import RequestTable from '../../shared-view/requests-view/RequestTable';
 import requestService from '../../../services/RequestService';
-
+import { useToaster } from 'rsuite/toaster';
+import { Message } from 'rsuite';
 const RequestsForApprovingPage = () => {
     const [rows, setRows] = useState([]);
-
+    const toaster = useToaster();
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await requestService.getListRequestByAccomodationId(
-                    '1' //todo id od accomodation
+                    localStorage.accommodationId
                 );
-                setRows(response.data);
-                if (response.data.len == 0) {
-                    //todo popup
-                } //todo error
+                if (response.status !== 200) {
+                    toaster.push(
+                        <Message showIcon type="error">
+                            There is no requests for accomodation.
+                        </Message>,
+                        { placement: 'topEnd' }
+                    );
+                } else {
+                    setRows(response.data);
+                }
             } catch (error) {
+                toaster.push(
+                    <Message showIcon type="error">
+                        There is no requests for accomodation.
+                    </Message>,
+                    { placement: 'topEnd' }
+                );
                 console.error(error);
             }
         };
