@@ -1,16 +1,29 @@
 import './AccommodationView.scss';
 import { Accommodation } from '../../../../shared/model/accommodation';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { accommodationService } from '../../../../services/accommodationServie';
-import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
+import { useModal } from 'react-simple-modal-provider';
 
 function AccommodationView() {
     const params = useParams();
     const id = params.id;
+    let navigate = useNavigate();
 
     const [accommodation, setAccommodation] = useState<Accommodation>();
+
+    const { open: openRatingModal } = useModal('RatingModal');
+
+    const handleClickHostRating = (event: any) => {
+        navigate(window.location.pathname + '#rateHost');
+        openRatingModal(event);
+    };
+
+    const handleClickAccommodationRating = (event: any) => {
+        navigate(window.location.pathname + '#rateAcc');
+        openRatingModal(event);
+    };
 
     useEffect(() => {
         if (id) {
@@ -21,7 +34,6 @@ function AccommodationView() {
         }
     }, [id]);
 
-    let navigate = useNavigate();
     const priceClick = () => {
         localStorage.accommodationId = accommodation ? accommodation.id : '';
         navigate('/main/host/pricesTable');
@@ -78,7 +90,13 @@ function AccommodationView() {
                 </div>
 
                 <div className="score">
-                    <span>Average Score: {accommodation.averageScore}</span>
+                    <button onClick={handleClickAccommodationRating}>
+                        Average Score: {accommodation.averageScore}
+                    </button>
+                </div>
+
+                <div className="host">
+                    <button onClick={handleClickHostRating}>Host: host@gmail.com</button>
                 </div>
             </div>
             <div>

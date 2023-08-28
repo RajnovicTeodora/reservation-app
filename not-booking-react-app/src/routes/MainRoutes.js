@@ -24,6 +24,10 @@ const MainRoutes = {
     element: <MainLayout />,
     children: [
         {
+            path: '/main',
+            element: <Accommodations />,
+        },
+        {
             path: 'accommodations',
             children: [
                 {
