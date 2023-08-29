@@ -23,12 +23,13 @@ import requestService from '../../../services/RequestService';
 // import { useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
-
+import { useToaster } from 'rsuite/toaster';
+import { Message } from 'rsuite';
 const CreateRequest = ({ ...others }) => {
     const theme = useTheme();
     let navigate = useNavigate();
     const scriptedRef = useScriptRef();
-
+    const toaster = useToaster();
     return (
         <>
             <h2>Creating requests</h2>
@@ -37,6 +38,8 @@ const CreateRequest = ({ ...others }) => {
                     guestNumber: '',
                     dateFrom: '',
                     dateTo: '',
+                    accomodationId: localStorage.accommodationId,
+                    username: localStorage.user.split('username":"')[1].split('"')[0],
                 }}
                 validationSchema={Yup.object().shape({
                     guestNumber: Yup.number().max(100).min(1).required('Guest number is required'),
@@ -49,19 +52,42 @@ const CreateRequest = ({ ...others }) => {
                             guestNumber: values.guestNumber,
                             requestStatus: 'PENDING',
                             isDeleted: false,
-                            accomodationId: '1', //todo vezano za accomodation
+                            accomodationId: localStorage.accommodationId,
                             dateFrom: values.dateFrom,
                             dateTo: values.dateTo,
+                            username: values.username,
                         };
                         requestService.createRequest(newRequest).then(
-                            () => {
-                                navigate('/main');
-                                window.location.reload();
+                            (resp) => {
+                                if (resp.response.status === 200) {
+                                    toaster.push(
+                                        <Message showIcon type="success">
+                                            Successfully created request!
+                                        </Message>,
+                                        { placement: 'topEnd' }
+                                    );
+                                    navigate('/main');
+                                    window.location.reload();
+                                } else {
+                                    toaster.push(
+                                        <Message showIcon type="error">
+                                            Couldnt creat request!
+                                        </Message>,
+                                        { placement: 'topEnd' }
+                                    );
+                                }
                             },
                             (error) => {
                                 setStatus({ success: false });
                                 setErrors({ submit: error.response.data });
                                 setSubmitting(false);
+                                const resMessage = error.response.data;
+                                toaster.push(
+                                    <Message showIcon type="error" closable>
+                                        {resMessage}
+                                    </Message>,
+                                    { placement: 'topEnd' }
+                                );
                             }
                         );
 

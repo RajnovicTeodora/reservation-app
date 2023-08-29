@@ -1,6 +1,6 @@
 import axios from 'axios';
 const ENDPOINTS = {
-    BASE: 'http://localhost:8080/api/unavilability/',
+    BASE: 'http://localhost:8082/api/unavilability/',
     ADD_UNAVILABILITY: 'addUnavilability',
     GET_LIST_UNAVILABILITIES_BY_ACCOMODATION_iD: 'getListUnavilabilitiesForAccomodation/',
 };
@@ -22,7 +22,7 @@ class UnavilabilityService {
             return await axios.get(
                 ENDPOINTS.BASE +
                     ENDPOINTS.GET_LIST_UNAVILABILITIES_BY_ACCOMODATION_iD +
-                    '648ebee63073a2143b4f95bf'
+                    localStorage.accommodationId
             );
         } catch (error) {
             return error;

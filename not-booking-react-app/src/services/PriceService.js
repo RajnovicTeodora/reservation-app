@@ -1,6 +1,6 @@
 import axios from 'axios';
 const ENDPOINTS = {
-    BASE: 'http://localhost:8080/api/price/',
+    BASE: 'http://localhost:8082/api/price/',
     ADD_PRICE: 'addPrice',
     GET_LIST_PRICES_BY_ACCOMODATION_iD: 'getListPricesForAccomodation/',
 };
@@ -8,18 +8,18 @@ const ENDPOINTS = {
 class PriceService {
     createPrice = async (newPrice) => {
         try {
-            const response = await axios.post(ENDPOINTS.BASE + ENDPOINTS.ADD_PRICE, newPrice);
-            return response;
+            return await axios.post(ENDPOINTS.BASE + ENDPOINTS.ADD_PRICE, newPrice);
         } catch (error) {
             return error;
         }
     };
     getListPricesByAccomodationId = async () => {
         try {
-            const response = await axios.get(
-                ENDPOINTS.BASE + ENDPOINTS.GET_LIST_PRICES_BY_ACCOMODATION_iD + '1'
+            return await axios.get(
+                ENDPOINTS.BASE +
+                    ENDPOINTS.GET_LIST_PRICES_BY_ACCOMODATION_iD +
+                    localStorage.accommodationId
             );
-            return response;
         } catch (error) {
             return error;
         }

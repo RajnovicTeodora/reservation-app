@@ -6,9 +6,10 @@ import createAccomodation from './createAccomodation';
 import unavilabilityTable from './unavilabilityTable';
 
 import priceTable from './priceTable';
-
+import tableOfRequests from './TableRequestPage';
 import createRequest from './createRequest';
 import requestTable from './requestTable';
+import tableOfReservations from './TableReservationPage';
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {
@@ -22,6 +23,8 @@ const menuItems = {
         priceTable,
         createRequest,
         requestTable,
+        tableOfRequests,
+        tableOfReservations,
     ],
 };
 
