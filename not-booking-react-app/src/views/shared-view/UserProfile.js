@@ -30,6 +30,7 @@ import UserService from '../../services/user.service';
 
 import { Message } from 'rsuite';
 import { useToaster } from 'rsuite/toaster';
+import reservationService from '../../services/ReservationService';
 
 // ================================|| AUTH3 - REGISTER  ||================================ //
 
@@ -136,14 +137,42 @@ const UserProfile = ({ ...others }) => {
                                         };
                                         UserService.editUser(data).then(
                                             (response) => {
-                                                UserService.updateUser(response.data);
-                                                toaster.push(
-                                                    <Message showIcon type="success">
-                                                        Successfully updated account!
-                                                    </Message>,
-                                                    { placement: 'topEnd' }
-                                                );
-                                                window.location.reload();
+                                                reservationService
+                                                    .updateUsername(
+                                                        user.username,
+                                                        response.data.username,
+                                                        JSON.parse(localStorage.getItem('user'))
+                                                            .userType
+                                                    )
+                                                    .then(
+                                                        () => {
+                                                            UserService.updateUser(response.data);
+                                                            toaster.push(
+                                                                <Message showIcon type="success">
+                                                                    Successfully updated account!
+                                                                </Message>,
+                                                                { placement: 'topEnd' }
+                                                            );
+                                                            window.location.reload();
+                                                        },
+                                                        (err) => {
+                                                            toaster.push(
+                                                                <Message
+                                                                    showIcon
+                                                                    type="error"
+                                                                    closable
+                                                                >
+                                                                    {err.response.data}
+                                                                </Message>,
+                                                                { placement: 'topEnd' }
+                                                            );
+                                                            setStatus({ success: false });
+                                                            setErrors({
+                                                                submit: err.response.data,
+                                                            });
+                                                            setSubmitting(false);
+                                                        }
+                                                    );
                                             },
                                             (error) => {
                                                 const resMessage = error.response.data;

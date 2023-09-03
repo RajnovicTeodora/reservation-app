@@ -53,7 +53,11 @@ const ProfileSection = () => {
     const { open: openModal2 } = useModal('DeleteUserModal');
     const { open: openChangePassword } = useModal('ChangePasswordModal');
 
-    const [notification, setNotification] = useState(true);
+    const [notification1, setNotification1] = useState(false);
+    const [notification2, setNotification2] = useState(false);
+    const [notification3, setNotification3] = useState(false);
+    const [notification4, setNotification4] = useState(false);
+    const [notification5, setNotification5] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(-1);
     const [open, setOpen] = useState(false);
     const [user] = useState(JSON.parse(localStorage.getItem('user')));
@@ -85,9 +89,27 @@ const ProfileSection = () => {
         );
     };
 
-    const handleNotification = (checked) => {
-        setNotification(checked);
-        UserService.changeNotification(user.email).then(
+    const handleNotification = (checked, type) => {
+        switch (type) {
+            case 1:
+                setNotification1(checked);
+                break;
+            case 2:
+                setNotification2(checked);
+                break;
+            case 3:
+                setNotification3(checked);
+                break;
+            case 4:
+                setNotification4(checked);
+                break;
+            case 5:
+                setNotification5(checked);
+                break;
+            default:
+                break;
+        }
+        UserService.changeNotification(type).then(
             (response) => {
                 toaster.push(
                     <Message showIcon type="success">
@@ -131,6 +153,29 @@ const ProfileSection = () => {
     useEffect(() => {
         if (prevOpen.current === true && open === false) {
             anchorRef.current.focus();
+        }
+        if (open) {
+            UserService.checkNotification(user.username).then(
+                (response) => {
+                    if (user.userType == 'HOST') {
+                        setNotification1(response.data.type1);
+                        setNotification2(response.data.type2);
+                        setNotification3(response.data.type3);
+                        setNotification4(response.data.type4);
+                    } else {
+                        setNotification5(response.data.type5);
+                    }
+                },
+                (error) => {
+                    const resMessage = error.response;
+                    toaster.push(
+                        <Message showIcon type="error" closable>
+                            {resMessage}
+                        </Message>,
+                        { placement: 'topEnd' }
+                    );
+                }
+            );
         }
 
         prevOpen.current = open;
@@ -233,6 +278,15 @@ const ProfileSection = () => {
                                         </Stack>
                                     </Box>
                                     <Divider />
+                                    <Box sx={{ p: 2, marginBottom: '-30px' }}>
+                                        <Typography
+                                            component="span"
+                                            variant="subtitle1"
+                                            sx={{ fontWeight: 400 }}
+                                        >
+                                            Notifications On
+                                        </Typography>
+                                    </Box>
                                     <PerfectScrollbar
                                         style={{
                                             height: '100%',
@@ -249,32 +303,164 @@ const ProfileSection = () => {
                                             >
                                                 <CardContent>
                                                     <Grid container spacing={3} direction="column">
-                                                        <Grid item>
-                                                            <Grid
-                                                                item
-                                                                container
-                                                                alignItems="center"
-                                                                justifyContent="space-between"
-                                                            >
-                                                                <Grid item>
-                                                                    <Typography variant="subtitle1">
-                                                                        Allow Notifications
-                                                                    </Typography>
-                                                                </Grid>
-                                                                <Grid item>
-                                                                    <Switch
-                                                                        checked={notification}
-                                                                        onChange={(e) =>
-                                                                            handleNotification(
-                                                                                e.target.checked
-                                                                            )
-                                                                        }
-                                                                        name="sdm"
-                                                                        size="small"
-                                                                    />
+                                                        {user.userType == 'GUEST' && (
+                                                            <Grid item>
+                                                                <Grid
+                                                                    item
+                                                                    container
+                                                                    alignItems="center"
+                                                                    justifyContent="space-between"
+                                                                >
+                                                                    <Grid item>
+                                                                        <Typography variant="subtitle1">
+                                                                            Reservation Request
+                                                                            Response
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid item>
+                                                                        <Switch
+                                                                            checked={notification5}
+                                                                            onChange={(e) =>
+                                                                                handleNotification(
+                                                                                    e.target
+                                                                                        .checked,
+                                                                                    5
+                                                                                )
+                                                                            }
+                                                                            name="sdm"
+                                                                            size="small"
+                                                                        />
+                                                                    </Grid>
                                                                 </Grid>
                                                             </Grid>
-                                                        </Grid>
+                                                        )}
+                                                        {user.userType == 'HOST' && (
+                                                            <>
+                                                                <Grid item>
+                                                                    <Grid
+                                                                        item
+                                                                        container
+                                                                        alignItems="center"
+                                                                        justifyContent="space-between"
+                                                                    >
+                                                                        <Grid item>
+                                                                            <Typography variant="subtitle1">
+                                                                                New Reservation
+                                                                                Request
+                                                                            </Typography>
+                                                                        </Grid>
+                                                                        <Grid item>
+                                                                            <Switch
+                                                                                checked={
+                                                                                    notification1
+                                                                                }
+                                                                                onChange={(e) =>
+                                                                                    handleNotification(
+                                                                                        e.target
+                                                                                            .checked,
+                                                                                        1
+                                                                                    )
+                                                                                }
+                                                                                name="sdm"
+                                                                                size="small"
+                                                                            />
+                                                                        </Grid>
+                                                                    </Grid>
+                                                                </Grid>
+                                                                <Grid item>
+                                                                    <Grid
+                                                                        item
+                                                                        container
+                                                                        alignItems="center"
+                                                                        justifyContent="space-between"
+                                                                    >
+                                                                        <Grid item>
+                                                                            <Typography variant="subtitle1">
+                                                                                Cancelled
+                                                                                Reservation
+                                                                            </Typography>
+                                                                        </Grid>
+                                                                        <Grid item>
+                                                                            <Switch
+                                                                                checked={
+                                                                                    notification2
+                                                                                }
+                                                                                onChange={(e) =>
+                                                                                    handleNotification(
+                                                                                        e.target
+                                                                                            .checked,
+                                                                                        2
+                                                                                    )
+                                                                                }
+                                                                                name="sdm"
+                                                                                size="small"
+                                                                            />
+                                                                        </Grid>
+                                                                    </Grid>
+                                                                </Grid>
+                                                                <Grid item>
+                                                                    <Grid
+                                                                        item
+                                                                        container
+                                                                        alignItems="center"
+                                                                        justifyContent="space-between"
+                                                                    >
+                                                                        <Grid item>
+                                                                            <Typography variant="subtitle1">
+                                                                                New Host Rating
+                                                                            </Typography>
+                                                                        </Grid>
+                                                                        <Grid item>
+                                                                            <Switch
+                                                                                checked={
+                                                                                    notification3
+                                                                                }
+                                                                                onChange={(e) =>
+                                                                                    handleNotification(
+                                                                                        e.target
+                                                                                            .checked,
+                                                                                        3
+                                                                                    )
+                                                                                }
+                                                                                name="sdm"
+                                                                                size="small"
+                                                                            />
+                                                                        </Grid>
+                                                                    </Grid>
+                                                                </Grid>
+                                                                <Grid item>
+                                                                    <Grid
+                                                                        item
+                                                                        container
+                                                                        alignItems="center"
+                                                                        justifyContent="space-between"
+                                                                    >
+                                                                        <Grid item>
+                                                                            <Typography variant="subtitle1">
+                                                                                New Accommodation
+                                                                                Rating
+                                                                            </Typography>
+                                                                        </Grid>
+                                                                        <Grid item>
+                                                                            <Switch
+                                                                                checked={
+                                                                                    notification4
+                                                                                }
+                                                                                onChange={(e) =>
+                                                                                    handleNotification(
+                                                                                        e.target
+                                                                                            .checked,
+                                                                                        4
+                                                                                    )
+                                                                                }
+                                                                                name="sdm"
+                                                                                size="small"
+                                                                            />
+                                                                        </Grid>
+                                                                    </Grid>
+                                                                </Grid>
+                                                            </>
+                                                        )}
                                                     </Grid>
                                                 </CardContent>
                                             </Card>

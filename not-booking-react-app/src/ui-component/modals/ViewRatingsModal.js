@@ -25,41 +25,42 @@ const ViewRatingsModal = ({ children }) => {
     const [rows, setRows] = useState([]);
 
     useEffect(() => {
-        if (temp.includes('#viewRating')) {
-            if (temp.includes('#viewRatingHost')) {
-                setRatingType('Host');
-                RatingService.getAllHostScores('host@gmail.com').then(
-                    //TODO get host mail or id
-                    (response) => {
-                        setRows(response.data);
-                    },
-                    (error) => {
-                        toaster.push(
-                            <Message showIcon type="info" closable>
-                                {error.response}
-                            </Message>,
-                            { placement: 'topEnd' }
-                        );
-                    }
-                );
-            } else if (temp.includes('#viewRatingAcc')) {
-                setRatingType('Accommodation');
-                RatingService.getAllAccommodationScores(parseInt(id)).then(
-                    (response) => {
-                        setRows(response.data);
-                    },
-                    (error) => {
-                        toaster.push(
-                            <Message showIcon type="info" closable>
-                                {error.response.data}
-                            </Message>,
-                            { placement: 'topEnd' }
-                        );
-                    }
-                );
+        if (id) {
+            if (temp.includes('#viewRating')) {
+                if (temp.includes('#viewRatingHost')) {
+                    setRatingType('Host');
+                    RatingService.getAllHostScores(localStorage.hostUsername).then(
+                        (response) => {
+                            setRows(response.data);
+                        },
+                        (error) => {
+                            toaster.push(
+                                <Message showIcon type="info" closable>
+                                    {error.response}
+                                </Message>,
+                                { placement: 'topEnd' }
+                            );
+                        }
+                    );
+                } else if (temp.includes('#viewRatingAcc')) {
+                    setRatingType('Accommodation');
+                    RatingService.getAllAccommodationScores(id).then(
+                        (response) => {
+                            setRows(response.data);
+                        },
+                        (error) => {
+                            toaster.push(
+                                <Message showIcon type="info" closable>
+                                    {error.response.data}
+                                </Message>,
+                                { placement: 'topEnd' }
+                            );
+                        }
+                    );
+                }
             }
         }
-    }, [temp]);
+    }, [id, temp]);
 
     return (
         <Modal

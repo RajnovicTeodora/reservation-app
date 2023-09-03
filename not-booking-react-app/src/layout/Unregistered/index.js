@@ -9,6 +9,7 @@ import { AppBar, Box, CssBaseline, Toolbar } from '@mui/material';
 
 //import navigation from 'menu-items';
 import { drawerWidth } from '../../store/constant';
+import ParticlesBg from 'particles-bg';
 
 // constant
 
@@ -69,6 +70,7 @@ const Unregistered = () => {
                     justifyContent: 'center',
                 }}
             >
+                <ParticlesBg type="circle" bg={true} />
                 <Outlet />
             </Main>
         </Box>

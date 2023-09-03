@@ -18,17 +18,37 @@ import requestService from '../../../services/RequestService';
 import { useNavigate } from 'react-router-dom';
 import { useToaster } from 'rsuite/toaster';
 import { Message } from 'rsuite';
+import UserService from '../../../services/user.service';
+import NotificationService from '../../../services/notification.service';
 const RequestTable = ({ rows, isByGuest }) => {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const [dialogText, setDialogText] = useState('');
     const [requestId, setRequestId] = useState('');
     const toaster = useToaster();
+    const [guestUsername, setUsername] = useState('');
 
-    const handleOpen = (text, id) => {
+    const handleOpen = (text, id, username) => {
         setRequestId(id);
         setDialogText(text);
         setOpen(true);
+        setUsername(username);
+    };
+
+    const createNotification = () => {
+        //TODO check
+        UserService.checkNotification(guestUsername).then((response) => {
+            if (response.data.type5) {
+                NotificationService.createNotification(response.data.userId, 5).then((error) => {
+                    toaster.push(
+                        <Message showIcon type="error" closable>
+                            {error.response.data}
+                        </Message>,
+                        { placement: 'topEnd' }
+                    );
+                });
+            }
+        });
     };
 
     const handleAgree = () => {
@@ -41,6 +61,7 @@ const RequestTable = ({ rows, isByGuest }) => {
                         </Message>,
                         { placement: 'topEnd' }
                     );
+                    createNotification();
                     window.location.reload();
                 } else {
                     toaster.push(
@@ -60,6 +81,7 @@ const RequestTable = ({ rows, isByGuest }) => {
                         </Message>,
                         { placement: 'topEnd' }
                     );
+                    createNotification();
                     navigate('/');
                 } else {
                     toaster.push(
@@ -159,7 +181,8 @@ const RequestTable = ({ rows, isByGuest }) => {
                                             onClick={() => {
                                                 handleOpen(
                                                     'Are you sure you want to delete this request?',
-                                                    row.id
+                                                    row.id,
+                                                    row.username
                                                 );
                                             }}
                                         >

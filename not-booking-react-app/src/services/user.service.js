@@ -31,10 +31,10 @@ const stringAvatar = (name) => {
     };
 };
 
-const changeNotification = () => {
+const changeNotification = (type) => {
     const headers = AuthService.authHeader(false);
     let email = JSON.parse(localStorage.getItem('user')).email;
-    return axios.get(API_URL + 'changeNotification/' + email, {
+    return axios.get(API_URL + 'changeNotification/' + email + '/' + type, {
         headers: headers,
     });
 };
@@ -90,6 +90,13 @@ const changePassword = (oldPass, newPass) => {
     );
 };
 
+const checkNotification = (username) => {
+    const headers = AuthService.authHeader(false);
+    return axios.get(API_URL + 'checkNotification/' + username, {
+        headers: headers,
+    });
+};
+
 const UserService = {
     stringToColor,
     stringAvatar,
@@ -99,6 +106,7 @@ const UserService = {
     editUser,
     updateUser,
     changePassword,
+    checkNotification,
 };
 
 export default UserService;
