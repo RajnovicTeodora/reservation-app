@@ -28,22 +28,27 @@ import { Formik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { Box, FormHelperText, InputLabel, OutlinedInput } from '@mui/material';
 import priceService from '../../../services/PriceService';
+import { useToaster } from 'rsuite/toaster';
+import { Message } from 'rsuite';
 
 const PriceTable = ({ ...others }) => {
     const theme = useTheme();
     let navigate = useNavigate();
     const scriptedRef = useScriptRef();
-
     const [open, setOpen] = useState(false);
     const [status, setStatus] = useState('PER_GUEST');
     const [startDate, setStartDate] = useState();
     const [rows, setRows] = useState([]);
+    const [price, setPrice] = useState(0);
+    const toaster = useToaster();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await priceService.getListPricesByAccomodationId();
-                setRows(response.data);
+                if (response.response.status === 200) {
+                    setRows(response.data);
+                }
             } catch (error) {
                 console.error(error);
             }
@@ -117,13 +122,29 @@ const PriceTable = ({ ...others }) => {
                                 const newPrice = {
                                     startDate: startDate,
                                     status: status,
-                                    price: values.price,
-                                    accomodationId: '1',
+                                    price: price,
+                                    accomodationId: localStorage.accommodationId,
                                 };
                                 priceService.createPrice(newPrice).then(
-                                    () => {
-                                        navigate('/main');
-                                        window.location.reload();
+                                    (resp) => {
+                                        if (resp.response.status === 200) {
+                                            toaster.push(
+                                                <Message showIcon type="success">
+                                                    Successfully created price!
+                                                </Message>,
+                                                { placement: 'topEnd' }
+                                            );
+                                            window.location.reload();
+                                            navigate('/main');
+                                            window.location.reload();
+                                        } else {
+                                            toaster.push(
+                                                <Message showIcon type="error">
+                                                    Couldnt creat price!
+                                                </Message>,
+                                                { placement: 'topEnd' }
+                                            );
+                                        }
                                     },
                                     (error) => {
                                         const resMessage = error.response.data;
@@ -147,7 +168,7 @@ const PriceTable = ({ ...others }) => {
                             }
                         }}
                     >
-                        {({ errors, handleBlur, handleSubmit, isSubmitting, touched, values }) => (
+                        {({ errors, handleBlur, handleSubmit, isSubmitting, touched }) => (
                             <form noValidate onSubmit={handleSubmit} {...others}>
                                 <InputLabel htmlFor="outlined-adornment-city">
                                     Start date
@@ -191,11 +212,11 @@ const PriceTable = ({ ...others }) => {
                                         <OutlinedInput
                                             id="outlined-adornment-price"
                                             type="number"
-                                            value={values.price}
+                                            value={price}
                                             name="price"
                                             onBlur={handleBlur}
-                                            onChange={(date) => {
-                                                setStartDate(date);
+                                            onChange={(value) => {
+                                                setPrice(value['target'].value);
                                             }}
                                             label="price"
                                             inputProps={{}}

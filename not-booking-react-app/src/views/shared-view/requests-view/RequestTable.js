@@ -16,12 +16,14 @@ import {
 } from '@mui/material';
 import requestService from '../../../services/RequestService';
 import { useNavigate } from 'react-router-dom';
+import { useToaster } from 'rsuite/toaster';
+import { Message } from 'rsuite';
 const RequestTable = ({ rows, isByGuest }) => {
-    //ide ili po accomodation-u ili po useru, mogu vise njih da ga koriste
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const [dialogText, setDialogText] = useState('');
     const [requestId, setRequestId] = useState('');
+    const toaster = useToaster();
 
     const handleOpen = (text, id) => {
         setRequestId(id);
@@ -33,25 +35,60 @@ const RequestTable = ({ rows, isByGuest }) => {
         if (dialogText == 'Are you sure you want to delete this request?') {
             requestService.deleteRequest(requestId).then((res) => {
                 if (res.data) {
-                    navigate('/');
+                    toaster.push(
+                        <Message showIcon type="success">
+                            Successfully deleted request!
+                        </Message>,
+                        { placement: 'topEnd' }
+                    );
+                    window.location.reload();
+                } else {
+                    toaster.push(
+                        <Message showIcon type="error" closable>
+                            Error while deleting request
+                        </Message>,
+                        { placement: 'topEnd' }
+                    );
                 }
-                //todo neka poruka
             });
         } else if (dialogText == 'Are you sure you want to approve this request?') {
             requestService.approveRequest(requestId).then((res) => {
                 if (res.data != null) {
-                    navigate('/'); //todo mozda negde drugo
+                    toaster.push(
+                        <Message showIcon type="success">
+                            Successfully approved request!
+                        </Message>,
+                        { placement: 'topEnd' }
+                    );
+                    navigate('/');
+                } else {
+                    toaster.push(
+                        <Message showIcon type="error" closable>
+                            Error while approving request
+                        </Message>,
+                        { placement: 'topEnd' }
+                    );
                 }
-                //todo neka poruka
             });
         } else {
             requestService.declineRequest(requestId).then((res) => {
                 if (res.data) {
+                    toaster.push(
+                        <Message showIcon type="success">
+                            Successfully declined request!
+                        </Message>,
+                        { placement: 'topEnd' }
+                    );
                     navigate('/');
+                } else {
+                    toaster.push(
+                        <Message showIcon type="error" closable>
+                            Error while declining request
+                        </Message>,
+                        { placement: 'topEnd' }
+                    );
                 }
-                //todo neka poruka
             });
-            //reject approve drugi feature
         }
         setOpen(false);
     };

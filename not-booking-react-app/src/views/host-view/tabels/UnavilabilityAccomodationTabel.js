@@ -14,22 +14,27 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { InputLabel, OutlinedInput } from '@mui/material';
 import unavilailityService from '../../../services/UnavilabilityService';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 import useScriptRef from '../../../hooks/useScriptRef';
 import { useState, useEffect } from 'react';
+import { useToaster } from 'rsuite/toaster';
+import { Message } from 'rsuite';
+
 const UnavilabilityAccomodationTabel = () => {
     const [open, setOpen] = useState(false);
     const [startDate, setStartDate] = useState();
     const [endDate, setEndDate] = useState();
     const [rows, setRows] = useState([]);
-    let navigate = useNavigate();
     const scriptedRef = useScriptRef();
+    const toaster = useToaster();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await unavilailityService.getListUnavilabilityByAccomodationId();
-                setRows(response.data);
+                if (response.code !== 'ERR_NETWORK') {
+                    setRows(response.data);
+                }
             } catch (error) {
                 console.error(error);
             }
@@ -50,21 +55,38 @@ const UnavilabilityAccomodationTabel = () => {
             const newUnavilability = {
                 startDate: startDate,
                 endDate: endDate,
-                accomodationId: '648ebee63073a2143b4f95bf',
+                accomodationId: localStorage.accommodationId,
             };
             unavilailityService.createUnavilability(newUnavilability).then(
-                () => {
-                    navigate('/main');
-                    window.location.reload();
+                (resp) => {
+                    if (resp.response.status === 200) {
+                        toaster.push(
+                            <Message showIcon type="success">
+                                Successfully created unavilability!
+                            </Message>,
+                            { placement: 'topEnd' }
+                        );
+                        window.location.reload();
+                    } else {
+                        toaster.push(
+                            <Message showIcon type="error">
+                                Couldnt creat unavilability!
+                            </Message>,
+                            { placement: 'topEnd' }
+                        );
+                    }
                 },
-                (error) => {
-                    const resMessage = error.response.data;
-                    console.log(resMessage);
+                () => {
+                    toaster.push(
+                        <Message showIcon type="error">
+                            There is error while creating unavilability!
+                        </Message>,
+                        { placement: 'topEnd' }
+                    );
                 }
             );
         } catch (err) {
             if (scriptedRef.current) {
-                console.log(err.message);
             }
         }
         setOpen(false);
