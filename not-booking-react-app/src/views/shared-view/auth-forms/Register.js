@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ParticlesBg from 'particles-bg';
+//import ParticlesBg from 'particles-bg';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -66,7 +66,7 @@ const Register = ({ ...others }) => {
 
     return (
         <>
-            <ParticlesBg type="circle" bg={true} />
+            {/*<ParticlesBg type="circle" bg={true} />*/}
             <Grid item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
                 <AuthCardWrapper>
                     <Grid container spacing={2} alignItems="center" justifyContent="center">

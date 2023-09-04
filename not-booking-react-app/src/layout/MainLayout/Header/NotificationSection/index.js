@@ -1,12 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import {
     Avatar,
     Box,
-    Button,
     ButtonBase,
     CardActions,
     Chip,
@@ -28,38 +26,38 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import MainCard from '../../../../ui-component/cards/MainCard';
 import Transitions from '../../../../ui-component/extended/Transitions';
 import NotificationList from './NotificationList';
+import NotificationService from '../../../../services/notification.service';
 
 // assets
 import { IconBell } from '@tabler/icons';
+import { Message, useToaster } from 'rsuite';
 
 // notification status options
 const status = [
     {
-        value: 'all',
+        value: '1',
         label: 'All Notification',
     },
     {
-        value: 'new',
-        label: 'New',
+        value: '2',
+        label: 'Read',
     },
     {
-        value: 'unread',
+        value: '3',
         label: 'Unread',
-    },
-    {
-        value: 'other',
-        label: 'Other',
     },
 ];
 
 // ==============================|| NOTIFICATION ||============================== //
 
 const NotificationSection = () => {
+    const toaster = useToaster();
     const theme = useTheme();
     const matchesXs = useMediaQuery(theme.breakpoints.down('md'));
 
     const [open, setOpen] = useState(false);
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState(1);
+    const [notificationList, setList] = useState([]);
     /**
      * anchorRef is used on different componets and specifying one type leads to other components throwing an error
      * */
@@ -67,6 +65,23 @@ const NotificationSection = () => {
 
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen);
+        handleNotifications(value);
+    };
+
+    const handleNotifications = (val) => {
+        NotificationService.getNotifications(val).then(
+            (response) => {
+                setList(response.data);
+            },
+            (error) => {
+                toaster.push(
+                    <Message showIcon type="error" closable>
+                        {error.response}
+                    </Message>,
+                    { placement: 'topEnd' }
+                );
+            }
+        );
     };
 
     const handleClose = (event) => {
@@ -85,7 +100,10 @@ const NotificationSection = () => {
     }, [open]);
 
     const handleChange = (event) => {
-        if (event?.target.value) setValue(event?.target.value);
+        if (event?.target.value) {
+            setValue(event?.target.value);
+            handleNotifications(event?.target.value);
+        }
     };
 
     return (
@@ -171,7 +189,7 @@ const NotificationSection = () => {
                                                         </Typography>
                                                         <Chip
                                                             size="small"
-                                                            label="01"
+                                                            label={notificationList.length}
                                                             sx={{
                                                                 color: theme.palette.background
                                                                     .default,
@@ -179,16 +197,6 @@ const NotificationSection = () => {
                                                             }}
                                                         />
                                                     </Stack>
-                                                </Grid>
-                                                <Grid item>
-                                                    <Typography
-                                                        component={Link}
-                                                        to="#"
-                                                        variant="subtitle2"
-                                                        color="primary"
-                                                    >
-                                                        Mark as all read
-                                                    </Typography>
                                                 </Grid>
                                             </Grid>
                                         </Grid>
@@ -228,16 +236,17 @@ const NotificationSection = () => {
                                                         <Divider sx={{ my: 0 }} />
                                                     </Grid>
                                                 </Grid>
-                                                <NotificationList />
+                                                <NotificationList
+                                                    notificationList={notificationList}
+                                                    typeChosen={value}
+                                                />
                                             </PerfectScrollbar>
                                         </Grid>
                                     </Grid>
                                     <Divider />
-                                    <CardActions sx={{ p: 1.25, justifyContent: 'center' }}>
-                                        <Button size="small" disableElevation>
-                                            View All
-                                        </Button>
-                                    </CardActions>
+                                    <CardActions
+                                        sx={{ p: 1.25, justifyContent: 'center' }}
+                                    ></CardActions>
                                 </MainCard>
                             </ClickAwayListener>
                         </Paper>

@@ -3,8 +3,11 @@ import { Accommodation } from '../../../../shared/model/accommodation';
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { accommodationService } from '../../../../services/accommodationServie';
-import { Button } from '@mui/material';
+import { Button, Tooltip } from '@mui/material';
 import { useModal } from 'react-simple-modal-provider';
+import RatingService from '../../../../services/rating.service';
+import { IconStar } from '@tabler/icons';
+import reservationService from '../../../../services/ReservationService';
 
 function AccommodationView() {
     const params = useParams();
@@ -12,11 +15,20 @@ function AccommodationView() {
     let navigate = useNavigate();
 
     const [accommodation, setAccommodation] = useState<Accommodation>();
+    const userType = localStorage.user.split('userType":"')[1].split('"')[0];
 
     const { open: openRatingModal } = useModal('RatingModal');
+    const { open: openViewRatingsModal } = useModal('ViewRatingsModal');
+    const [avgAccScore, setAvgAccScore] = useState(0);
+    const [avgHostScore, setAvgHostScore] = useState(0);
+    const [ratingType, setRatingType] = useState(0);
+    const [rateHostAvailable, setRateHost] = useState(false);
+    const [rateAccAvailable, setRateAcc] = useState(false);
+    const [hostUsername, setHostUsername] = useState('');
 
     const handleClickHostRating = (event: any) => {
         navigate(window.location.pathname + '#rateHost');
+        localStorage.hostUsername = hostUsername;
         openRatingModal(event);
     };
 
@@ -25,11 +37,39 @@ function AccommodationView() {
         openRatingModal(event);
     };
 
+    const handleClickViewAllRatings = (event: any) => {
+        ratingType == 1
+            ? navigate(window.location.pathname + '#viewRatingHost')
+            : navigate(window.location.pathname + '#viewRatingAcc');
+        localStorage.hostUsername = hostUsername;
+        openViewRatingsModal(event);
+    };
+
+    const getAvgScores = (accId: string) => {
+        RatingService.getAvgAccommodationScore(accId).then((response) => {
+            setAvgAccScore(response.data);
+            RatingService.getAvgHostScore(hostUsername).then((res) => {
+                setAvgHostScore(res.data);
+                checkFinishedReservations(accId);
+            });
+        });
+    };
+
+    const checkFinishedReservations = (accId: string) => {
+        const username = localStorage.user.split('username":"')[1].split('"')[0];
+        reservationService.checkFinishedReservations(hostUsername, username, accId).then((res) => {
+            setRateHost(res.data.rateHost);
+            setRateAcc(res.data.rateAcc);
+        });
+    };
+
     useEffect(() => {
         if (id) {
             const findAccomodationsPromise = accommodationService.findById(parseInt(id));
             findAccomodationsPromise.then((result) => {
                 setAccommodation(result.data);
+                setHostUsername('host123'); //TODO teodora postavi username
+                getAvgScores(id);
             });
         }
     }, [id]);
@@ -50,12 +90,31 @@ function AccommodationView() {
         localStorage.accommodationId = accommodation ? accommodation.id : '';
         navigate('/main/host/request');
     };
-    const userType = localStorage.user.split('userType":"')[1].split('"')[0];
 
     return accommodation ? (
         <div className="listing-details-container">
             <div className="listing-details">
-                <h2>{accommodation.name}</h2>
+                <div className="flex-disp">
+                    <div className="custom-modal-icon">{avgAccScore}</div>
+                    <div className="custom-text-modal">
+                        <h2 className="custom-text">Accommodation: {accommodation.name}</h2>
+                        <a
+                            onClick={(e) => {
+                                setRatingType(2);
+                                handleClickViewAllRatings(e);
+                            }}
+                        >
+                            View All Ratings
+                        </a>
+                    </div>
+                    {userType === 'GUEST' && rateAccAvailable && (
+                        <Tooltip title="Rate Accommodation">
+                            <Button onClick={handleClickAccommodationRating}>
+                                <IconStar className="custom-icon wheat-color" />
+                            </Button>
+                        </Tooltip>
+                    )}
+                </div>
                 <p>{accommodation.description}</p>
 
                 <div className="address">
@@ -89,14 +148,26 @@ function AccommodationView() {
                     </span>
                 </div>
 
-                <div className="score">
-                    <button onClick={handleClickAccommodationRating}>
-                        Average Score: {accommodation.averageScore}
-                    </button>
-                </div>
-
-                <div className="host">
-                    <button onClick={handleClickHostRating}>Host: host@gmail.com</button>
+                <div className="flex-disp">
+                    <div className="custom-modal-icon">{avgHostScore}</div>
+                    <div className="custom-text-modal">
+                        <h3 className="custom-text">Host: username</h3>
+                        <a
+                            onClick={(e) => {
+                                setRatingType(1);
+                                handleClickViewAllRatings(e);
+                            }}
+                        >
+                            View All Ratings
+                        </a>
+                    </div>
+                    {userType === 'GUEST' && rateHostAvailable && (
+                        <Tooltip title="Rate Host">
+                            <Button onClick={handleClickHostRating}>
+                                <IconStar className="custom-icon wheat-color" />
+                            </Button>
+                        </Tooltip>
+                    )}
                 </div>
             </div>
             <div>

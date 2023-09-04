@@ -17,18 +17,54 @@ import {
     DialogTitle,
 } from '@mui/material';
 import { Message } from 'rsuite';
+import accomoddationService from '../../../services/AccomoddationService';
+import UserService from '../../../services/user.service';
+import NotificationService from '../../../services/notification.service';
+
 const TableReservationPage = () => {
     const [rows, setRows] = useState([]);
     const toaster = useToaster();
-    const username = localStorage.user.split('username":"')[1].split('"')[0];
+    const username = JSON.parse(localStorage.getItem('user')).username;
     const [open, setOpen] = useState(false);
     const [dialogText, setDialogText] = useState('');
     const [requestId, setRequestId] = useState('');
+    const [accName, setAccName] = useState('');
 
-    const handleOpen = (text, id) => {
+    const createNotification = () => {
+        accomoddationService.getHostUsernameByAccId(accName, true).then(
+            (res) => {
+                //TODO check
+                UserService.checkNotification(res.data).then((response) => {
+                    if (response.data.type2) {
+                        NotificationService.createNotification(response.data.userId, 2).then(
+                            (error) => {
+                                toaster.push(
+                                    <Message showIcon type="error" closable>
+                                        {error.response.data}
+                                    </Message>,
+                                    { placement: 'topEnd' }
+                                );
+                            }
+                        );
+                    }
+                });
+            },
+            (err) => {
+                toaster.push(
+                    <Message showIcon type="error">
+                        {err.response.data}
+                    </Message>,
+                    { placement: 'topEnd' }
+                );
+            }
+        );
+    };
+
+    const handleOpen = (text, id, accommodationName) => {
         setRequestId(id);
         setDialogText(text);
         setOpen(true);
+        setAccName(accommodationName);
     };
     const handleAgree = () => {
         reservationService.deleteReservation(requestId).then((res) => {
@@ -39,6 +75,7 @@ const TableReservationPage = () => {
                     </Message>,
                     { placement: 'topEnd' }
                 );
+                createNotification();
                 window.location.reload();
             } else {
                 toaster.push(
@@ -125,7 +162,8 @@ const TableReservationPage = () => {
                                         onClick={() => {
                                             handleOpen(
                                                 'Are you sure you want to delete this request?',
-                                                row.id
+                                                row.id,
+                                                row.accomodation.name
                                             );
                                         }}
                                     >

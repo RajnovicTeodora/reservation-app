@@ -9,9 +9,9 @@ const getAvgAccommodationScore = (accommodationId) => {
     });
 };
 
-const getAvgHostScore = (hostmail) => {
+const getAvgHostScore = (hostUsername) => {
     const headers = AuthService.authHeader(false);
-    return axios.get(API_URL + 'getAvgHostScore/' + hostmail, {
+    return axios.get(API_URL + 'getAvgHostScore/' + hostUsername, {
         headers: headers,
     });
 };
@@ -23,25 +23,28 @@ const getAllAccommodationScores = (accommodationId) => {
     });
 };
 
-const getAllHostScores = (hostmail) => {
+const getAllHostScores = (hostUsername) => {
     const headers = AuthService.authHeader(false);
-    return axios.get(API_URL + 'getAllHostScores/' + hostmail, {
+    return axios.get(API_URL + 'getAllHostScores/' + hostUsername, {
         headers: headers,
     });
 };
 
 const getExistingAccommodationScore = (accommodationId) => {
     const headers = AuthService.authHeader(false);
-    let email = JSON.parse(localStorage.getItem('user')).email;
-    return axios.get(API_URL + 'getExistingAccommodationScore/' + email + '/' + accommodationId, {
-        headers: headers,
-    });
+    let username = JSON.parse(localStorage.getItem('user')).username;
+    return axios.get(
+        API_URL + 'getExistingAccommodationScore/' + username + '/' + accommodationId,
+        {
+            headers: headers,
+        }
+    );
 };
 
-const getExistingHostScore = (hostmail) => {
+const getExistingHostScore = (hostUsername) => {
     const headers = AuthService.authHeader(false);
-    let email = JSON.parse(localStorage.getItem('user')).email;
-    return axios.get(API_URL + 'getExistingHostScore/' + email + '/' + hostmail, {
+    let username = JSON.parse(localStorage.getItem('user')).username;
+    return axios.get(API_URL + 'getExistingHostScore/' + username + '/' + hostUsername, {
         headers: headers,
     });
 };

@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { Message } from 'rsuite';
 import { useToaster } from 'rsuite/toaster';
+import reservationService from '../../services/ReservationService';
+import accomoddationService from '../../services/AccomoddationService';
 
 const DeleteUserModal = ({ children }) => {
     const toaster = useToaster();
@@ -15,34 +17,69 @@ const DeleteUserModal = ({ children }) => {
     const navigate = useNavigate();
 
     const handleDelete = () => {
-        UserService.deleteAccount(user.email).then(
+        //TODO check
+        reservationService.checkActiveReservations(user.username, user.userType).then(
+            (res) => {
+                if (!res.data) {
+                    UserService.deleteAccount(user.email).then(
+                        () => {
+                            if (user.userType == 'HOST') {
+                                accomoddationService.deleteAccommodations(user.username).then(
+                                    () => {
+                                        toaster.push(
+                                            <Message showIcon type="success">
+                                                Successfully deleted host accommodations!
+                                            </Message>,
+                                            { placement: 'topEnd' }
+                                        );
+                                        logout();
+                                    },
+                                    (er) => {
+                                        showErrorMessage(er.response.data);
+                                    }
+                                );
+                            } else {
+                                logout();
+                            }
+                        },
+                        (error) => {
+                            showErrorMessage(error.response.data);
+                        }
+                    );
+                } else {
+                    showErrorMessage('Forbidden! Active reservations present');
+                }
+            },
+            (err) => {
+                showErrorMessage(err.response.data);
+            }
+        );
+    };
+
+    const showErrorMessage = (message) => {
+        toaster.push(
+            <Message showIcon type="error" closable>
+                {message}
+            </Message>,
+            { placement: 'topEnd' }
+        );
+    };
+
+    const logout = () => {
+        AuthService.logout().then(
             () => {
-                AuthService.logout().then(
-                    () => {
-                        toaster.push(
-                            <Message showIcon type="success">
-                                Successfully deleted account!
-                            </Message>,
-                            { placement: 'topEnd' }
-                        );
-                        navigate('/');
-                    },
-                    (error) => {
-                        const resMessage = error.response.data;
-                        toaster.push(
-                            <Message showIcon type="error" closable>
-                                {resMessage}
-                            </Message>,
-                            { placement: 'topEnd' }
-                        );
-                    }
+                toaster.push(
+                    <Message showIcon type="success">
+                        Successfully deleted account!
+                    </Message>,
+                    { placement: 'topEnd' }
                 );
+                navigate('/');
             },
             (error) => {
-                const resMessage = error.response.data;
                 toaster.push(
                     <Message showIcon type="error" closable>
-                        {resMessage}
+                        {error.response.data}
                     </Message>,
                     { placement: 'topEnd' }
                 );

@@ -8,6 +8,7 @@ import CreateRequest from '../views/guest-view/forms/CreateRequest';
 import RequestsForApprovingPage from '../views/host-view/pages/RequestsForApprovingPage';
 import TableRequestPage from '../views/guest-view/pages/TableRequestsPage';
 import TableReservationPage from '../views/guest-view/pages/TableReservationPage';
+import SamplePage from '../views/shared-view/sample-page';
 
 // ==============================|| MAIN ROUTING ||============================== //
 const UnavilabilityAccomodationTabel = Loadable(
@@ -25,7 +26,7 @@ const MainRoutes = {
     children: [
         {
             path: '/main',
-            element: <Accommodations />,
+            element: <SamplePage />,
         },
         {
             path: 'accommodations',

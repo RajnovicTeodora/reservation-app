@@ -13,6 +13,8 @@ import { FormControl, Grid, useMediaQuery } from '@mui/material';
 import { Formik } from 'formik';
 import { Rating } from 'react-simple-star-rating';
 import RatingService from '../../services/rating.service';
+import UserService from '../../services/user.service';
+import NotificationService from '../../services/notification.service';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Message } from 'rsuite';
 
@@ -45,10 +47,10 @@ const RatingModal = ({ children, others }) => {
     const handleDelete = () => {
         if (ratingExists) {
             const data = {
-                guestEmail: JSON.parse(localStorage.getItem('user')).email,
+                guestUsername: JSON.parse(localStorage.getItem('user')).username,
                 hostRating: ratingType == 'Host' ? true : false,
-                hostEmail: 'host@gmail.com', //TODO get host id or email
-                accommodation: parseInt(id),
+                hostUsername: localStorage.hostUsername,
+                accommodation: id,
             };
             RatingService.deleteRating(data).then(
                 () => {
@@ -61,14 +63,11 @@ const RatingModal = ({ children, others }) => {
                     setNewScore(0);
                     setRatingExists(false);
                     ratingType == 'Host' ? getAvgHostScore() : getAvgAccommodationScore();
-                    //setOpen(false);
-                    //navigate(window.location.pathname);
                 },
                 (error) => {
-                    const resMessage = error.response.data;
                     toaster.push(
                         <Message showIcon type="error" closable>
-                            {resMessage}
+                            {error.response.data}
                         </Message>,
                         { placement: 'topEnd' }
                     );
@@ -78,10 +77,25 @@ const RatingModal = ({ children, others }) => {
         }
     };
 
+    const checkNotification = (type) => {
+        UserService.checkNotification(localStorage.hostUsername).then((response) => {
+            if ((type == 3 && response.data.type3) || (type == 4 && response.data.type4)) {
+                NotificationService.createNotification(response.data.userId, type).then((error) => {
+                    toaster.push(
+                        <Message showIcon type="error" closable>
+                            {error.response.data}
+                        </Message>,
+                        { placement: 'topEnd' }
+                    );
+                });
+            }
+        });
+    };
+
     const getAvgHostScore = () => {
-        RatingService.getAvgHostScore('host@gmail.com').then((response) => {
+        RatingService.getAvgHostScore(localStorage.hostUsername).then((response) => {
             setAvgScore(response.data);
-            RatingService.getExistingHostScore('host@gmail.com').then((res) => {
+            RatingService.getExistingHostScore(localStorage.hostUsername).then((res) => {
                 setNewScore(res.data);
                 if (res.data != 0) {
                     setRatingExists(true);
@@ -91,9 +105,9 @@ const RatingModal = ({ children, others }) => {
     };
 
     const getAvgAccommodationScore = () => {
-        RatingService.getAvgAccommodationScore(parseInt(id)).then((response) => {
+        RatingService.getAvgAccommodationScore(id).then((response) => {
             setAvgScore(response.data);
-            RatingService.getExistingAccommodationScore(parseInt(id)).then((res) => {
+            RatingService.getExistingAccommodationScore(id).then((res) => {
                 setNewScore(res.data);
                 if (res.data != 0) {
                     setRatingExists(true);
@@ -103,17 +117,19 @@ const RatingModal = ({ children, others }) => {
     };
 
     useEffect(() => {
-        if (temp.includes('#rate')) {
-            setRatingExists(false);
-            if (temp.includes('#rateHost')) {
-                setRatingType('Host'); //TODO get host id or email
-                getAvgHostScore();
-            } else if (temp.includes('#rateAcc')) {
-                setRatingType('Accommodation');
-                getAvgAccommodationScore();
+        if (id) {
+            if (temp.includes('#rate')) {
+                setRatingExists(false);
+                if (temp.includes('#rateHost')) {
+                    setRatingType('Host');
+                    getAvgHostScore();
+                } else if (temp.includes('#rateAcc')) {
+                    setRatingType('Accommodation');
+                    getAvgAccommodationScore();
+                }
             }
         }
-    }, [temp]);
+    }, [id, temp]);
 
     return (
         <Modal
@@ -161,10 +177,10 @@ const RatingModal = ({ children, others }) => {
                                         );
                                     } else {
                                         const data = {
-                                            guestEmail: JSON.parse(localStorage.getItem('user'))
-                                                .email,
+                                            guestUsername: JSON.parse(localStorage.getItem('user'))
+                                                .username,
                                             hostRating: ratingType == 'Host' ? true : false,
-                                            hostEmail: 'host@gmail.com', //TODO get host id or email
+                                            hostUsername: localStorage.hostUsername,
                                             accommodation: id,
                                             score: newScore,
                                             editExistingRating: ratingExists,
@@ -178,11 +194,16 @@ const RatingModal = ({ children, others }) => {
                                                     </Message>,
                                                     { placement: 'topEnd' }
                                                 );
+
                                                 setNewScore(newScore);
                                                 setRatingExists(true);
-                                                ratingType == 'Host'
-                                                    ? getAvgHostScore()
-                                                    : getAvgAccommodationScore();
+                                                if (ratingType == 'Host') {
+                                                    getAvgHostScore();
+                                                    checkNotification(3);
+                                                } else {
+                                                    getAvgAccommodationScore();
+                                                    checkNotification(4);
+                                                }
                                             },
                                             (error) => {
                                                 toaster.push(

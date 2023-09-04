@@ -1,5 +1,5 @@
 import axios from 'axios';
-const API_URL = 'http://localhost:8081/api/user/';
+const API_URL = 'http://localhost:8080/api/user/';
 
 const login = (email, password) => {
     return axios
