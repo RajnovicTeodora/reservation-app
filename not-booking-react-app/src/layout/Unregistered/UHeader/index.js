@@ -4,7 +4,6 @@ import { Box } from '@mui/material';
 
 // project imports
 import LogoSection from '../../MainLayout/LogoSection';
-import SearchSection from '../../MainLayout/Header/SearchSection';
 import AuthSection from '../AuthSection';
 
 const UHeader = () => {
@@ -27,7 +26,6 @@ const UHeader = () => {
             </Box>
 
             {/* header search */}
-            <SearchSection />
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexGrow: 1 }} />
 

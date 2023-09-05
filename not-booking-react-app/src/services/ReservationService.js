@@ -1,6 +1,6 @@
 import axios from 'axios';
 const ENDPOINTS = {
-    BASE: 'http://localhost:8082/api/reservation/',
+    BASE: 'http://localhost:8081/api/reservation/',
     GET_BY_USER_ID: 'getByUserId/',
     DELETE_REQUEST: 'cancelReservation/',
     UPDATE_USERNAME: 'updateUsername/',

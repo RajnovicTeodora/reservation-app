@@ -1,6 +1,6 @@
 import axios from 'axios';
 const ENDPOINTS = {
-    BASE: 'http://localhost:8082/api/accomodation/',
+    BASE: 'http://localhost:8081/api/accomodation/',
     CREATE_ACCOMODATION: 'addAccomodation',
     DELETE_ACCOMMODATIONS: 'deleteAccommodations/',
     GET_HOST_USERNAME: 'getHostUsernameByAccId/',

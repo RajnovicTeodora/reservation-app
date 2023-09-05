@@ -36,7 +36,6 @@ import AuthService from '../../../services/auth.service';
 // assets
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-//import ParticlesBg from 'particles-bg';
 import { Message } from 'rsuite';
 import { useToaster } from 'rsuite/toaster';
 
@@ -62,7 +61,6 @@ const Login = ({ ...others }) => {
 
     return (
         <>
-            {/*<ParticlesBg type="circle" bg={true} />*/}
             <Grid item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
                 <AuthCardWrapper>
                     <Grid container spacing={2} alignItems="center" justifyContent="center">

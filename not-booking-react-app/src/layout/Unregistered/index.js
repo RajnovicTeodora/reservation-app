@@ -10,6 +10,8 @@ import { AppBar, Box, CssBaseline, Toolbar } from '@mui/material';
 //import navigation from 'menu-items';
 import { drawerWidth } from '../../store/constant';
 import ParticlesBg from 'particles-bg';
+import { ModalProvider } from 'react-simple-modal-provider';
+import modals from '../../ui-component/modals';
 
 // constant
 
@@ -43,37 +45,39 @@ const Main = styled('main')(({ theme }) => ({
 const Unregistered = () => {
     const theme = useTheme();
     return (
-        <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
-            {/* header */}
-            <AppBar
-                enableColorOnDark
-                position="fixed"
-                color="inherit"
-                elevation={0}
-                sx={{
-                    zIndex: 0,
-                    bgcolor: theme.palette.background.default,
-                    transition: 'none',
-                }}
-            >
-                <Toolbar>
-                    <UHeader />
-                </Toolbar>
-            </AppBar>
+        <ModalProvider value={modals}>
+            <Box sx={{ display: 'flex' }}>
+                <CssBaseline />
+                {/* header */}
+                <AppBar
+                    enableColorOnDark
+                    position="fixed"
+                    color="inherit"
+                    elevation={0}
+                    sx={{
+                        zIndex: 0,
+                        bgcolor: theme.palette.background.default,
+                        transition: 'none',
+                    }}
+                >
+                    <Toolbar>
+                        <UHeader />
+                    </Toolbar>
+                </AppBar>
 
-            {/* main content */}
-            <Main
-                sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
-            >
-                <ParticlesBg type="circle" bg={true} />
-                <Outlet />
-            </Main>
-        </Box>
+                {/* main content */}
+                <Main
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <ParticlesBg type="circle" bg={true} />
+                    <Outlet />
+                </Main>
+            </Box>
+        </ModalProvider>
     );
 };
 

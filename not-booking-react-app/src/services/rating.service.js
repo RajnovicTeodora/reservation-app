@@ -1,33 +1,21 @@
 import axios from 'axios';
 import AuthService from './auth.service';
-const API_URL = 'http://localhost:8080/api/rating/';
+const API_URL = 'http://localhost:8082/api/rating/';
 
 const getAvgAccommodationScore = (accommodationId) => {
-    const headers = AuthService.authHeader(false);
-    return axios.get(API_URL + 'getAvgAccommodationScore/' + accommodationId, {
-        headers: headers,
-    });
+    return axios.get(API_URL + 'getAvgAccommodationScore/' + accommodationId);
 };
 
 const getAvgHostScore = (hostUsername) => {
-    const headers = AuthService.authHeader(false);
-    return axios.get(API_URL + 'getAvgHostScore/' + hostUsername, {
-        headers: headers,
-    });
+    return axios.get(API_URL + 'getAvgHostScore/' + hostUsername);
 };
 
 const getAllAccommodationScores = (accommodationId) => {
-    const headers = AuthService.authHeader(false);
-    return axios.get(API_URL + 'getAllAccommodationScores/' + accommodationId, {
-        headers: headers,
-    });
+    return axios.get(API_URL + 'getAllAccommodationScores/' + accommodationId);
 };
 
 const getAllHostScores = (hostUsername) => {
-    const headers = AuthService.authHeader(false);
-    return axios.get(API_URL + 'getAllHostScores/' + hostUsername, {
-        headers: headers,
-    });
+    return axios.get(API_URL + 'getAllHostScores/' + hostUsername);
 };
 
 const getExistingAccommodationScore = (accommodationId) => {

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import AuthService from './auth.service';
-const API_URL = 'http://localhost:8080/api/user/';
+const API_URL = 'http://localhost:8082/api/user/';
 
 const stringToColor = (val) => {
     let hash = 0;

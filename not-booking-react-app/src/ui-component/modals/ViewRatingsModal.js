@@ -77,7 +77,10 @@ const ViewRatingsModal = ({ children }) => {
                     <button
                         type="button"
                         className="custom-x-button"
-                        onClick={() => setOpen(false)}
+                        onClick={() => {
+                            setOpen(false);
+                            setRows([]);
+                        }}
                     >
                         <IconX />
                     </button>
