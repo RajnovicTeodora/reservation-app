@@ -8,23 +8,26 @@ import { useModal } from 'react-simple-modal-provider';
 import RatingService from '../../../../services/rating.service';
 import { IconStar } from '@tabler/icons';
 import reservationService from '../../../../services/ReservationService';
+import { Message, useToaster } from 'rsuite';
 
 function AccommodationView() {
     const params = useParams();
     const id = params.id;
     let navigate = useNavigate();
+    const toaster = useToaster();
 
     const [accommodation, setAccommodation] = useState<Accommodation>();
-    const userType = localStorage.user.split('userType":"')[1].split('"')[0];
 
     const { open: openRatingModal } = useModal('RatingModal');
     const { open: openViewRatingsModal } = useModal('ViewRatingsModal');
     const [avgAccScore, setAvgAccScore] = useState(0);
     const [avgHostScore, setAvgHostScore] = useState(0);
-    const [ratingType, setRatingType] = useState(0);
     const [rateHostAvailable, setRateHost] = useState(false);
     const [rateAccAvailable, setRateAcc] = useState(false);
     const [hostUsername, setHostUsername] = useState('');
+    const userType = localStorage.user
+        ? localStorage.user.split('userType":"')[1].split('"')[0]
+        : '';
 
     const handleClickHostRating = (event: any) => {
         navigate(window.location.pathname + '#rateHost');
@@ -37,30 +40,46 @@ function AccommodationView() {
         openRatingModal(event);
     };
 
-    const handleClickViewAllRatings = (event: any) => {
-        ratingType == 1
-            ? navigate(window.location.pathname + '#viewRatingHost')
-            : navigate(window.location.pathname + '#viewRatingAcc');
+    const handleClickViewAllHostRatings = (event: any) => {
+        navigate(window.location.pathname + '#viewRatingHost');
         localStorage.hostUsername = hostUsername;
         openViewRatingsModal(event);
     };
 
-    const getAvgScores = (accId: string) => {
+    const handleClickViewAllAccRatings = (event: any) => {
+        navigate(window.location.pathname + '#viewRatingAcc');
+        localStorage.hostUsername = hostUsername;
+        openViewRatingsModal(event);
+    };
+
+    const getAvgScores = (accId: string, username: string) => {
         RatingService.getAvgAccommodationScore(accId).then((response) => {
             setAvgAccScore(response.data);
-            RatingService.getAvgHostScore(hostUsername).then((res) => {
+            RatingService.getAvgHostScore(username).then((res) => {
                 setAvgHostScore(res.data);
-                checkFinishedReservations(accId);
+                if (localStorage.user && userType == 'GUEST') {
+                    checkFinishedReservations(accId, username);
+                }
             });
         });
     };
 
-    const checkFinishedReservations = (accId: string) => {
+    const checkFinishedReservations = (accId: string, hUsername: string) => {
         const username = localStorage.user.split('username":"')[1].split('"')[0];
-        reservationService.checkFinishedReservations(hostUsername, username, accId).then((res) => {
-            setRateHost(res.data.rateHost);
-            setRateAcc(res.data.rateAcc);
-        });
+        reservationService.checkFinishedReservations(hUsername, username, accId).then(
+            (res) => {
+                setRateHost(res.data.rateHost);
+                setRateAcc(res.data.rateAcc);
+            },
+            (err) => {
+                toaster.push(
+                    <Message showIcon type="error" closable>
+                        {err.response.data}
+                    </Message>,
+                    { placement: 'topEnd' }
+                );
+            }
+        );
     };
 
     useEffect(() => {
@@ -69,26 +88,26 @@ function AccommodationView() {
             findAccomodationsPromise.then((result) => {
                 setAccommodation(result.data);
                 setHostUsername('host123'); //TODO teodora postavi username
-                getAvgScores(id);
+                getAvgScores(id, 'host123');
             });
         }
     }, [id]);
 
     const priceClick = () => {
         localStorage.accommodationId = accommodation ? accommodation.id : '';
-        navigate('/main/host/pricesTable');
+        navigate('/main/host/prices');
     };
     const unavilabilityClick = () => {
         localStorage.accommodationId = accommodation ? accommodation.id : '';
-        navigate('/main/host/un');
+        navigate('/main/host/unavaliability');
     };
     const requestsClick = () => {
         localStorage.accommodationId = accommodation ? accommodation.id : '';
-        navigate('/main/host/request_page');
+        navigate('/main/host/requests');
     };
     const reserveClick = () => {
         localStorage.accommodationId = accommodation ? accommodation.id : '';
-        navigate('/main/host/request');
+        navigate('/main/guest/create');
     };
 
     return accommodation ? (
@@ -100,8 +119,7 @@ function AccommodationView() {
                         <h2 className="custom-text">Accommodation: {accommodation.name}</h2>
                         <a
                             onClick={(e) => {
-                                setRatingType(2);
-                                handleClickViewAllRatings(e);
+                                handleClickViewAllAccRatings(e);
                             }}
                         >
                             View All Ratings
@@ -154,8 +172,7 @@ function AccommodationView() {
                         <h3 className="custom-text">Host: username</h3>
                         <a
                             onClick={(e) => {
-                                setRatingType(1);
-                                handleClickViewAllRatings(e);
+                                handleClickViewAllHostRatings(e);
                             }}
                         >
                             View All Ratings

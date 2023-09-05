@@ -1,6 +1,6 @@
 import axios from 'axios';
 import AuthService from './auth.service';
-const API_URL = 'http://localhost:8084/api/notification/';
+const API_URL = 'http://localhost:8083/api/notification/';
 
 const getNotifications = (status) => {
     let userId = JSON.parse(localStorage.getItem('user')).id;

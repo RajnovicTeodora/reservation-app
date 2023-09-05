@@ -1,6 +1,6 @@
 import axios from 'axios';
 const ENDPOINTS = {
-    BASE: 'http://localhost:8082/api/unavilability/',
+    BASE: 'http://localhost:8081/api/unavilability/',
     ADD_UNAVILABILITY: 'addUnavilability',
     GET_LIST_UNAVILABILITIES_BY_ACCOMODATION_iD: 'getListUnavilabilitiesForAccomodation/',
 };

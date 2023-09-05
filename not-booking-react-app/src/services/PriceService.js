@@ -1,6 +1,6 @@
 import axios from 'axios';
 const ENDPOINTS = {
-    BASE: 'http://localhost:8082/api/price/',
+    BASE: 'http://localhost:8081/api/price/',
     ADD_PRICE: 'addPrice',
     GET_LIST_PRICES_BY_ACCOMODATION_iD: 'getListPricesForAccomodation/',
 };
