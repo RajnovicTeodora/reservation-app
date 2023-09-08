@@ -9,7 +9,13 @@ import { Link } from 'react-router-dom';
 
 function AccommodationCard(props: { accommodation: Accommodation }) {
     const { accommodation } = props;
-    const url = '/main/accommodations/' + accommodation.id;
+    const userType = localStorage.user
+        ? localStorage.user.split('userType":"')[1].split('"')[0]
+        : '';
+    const url = localStorage.user
+        ? (userType == 'HOST' ? '/main/host/accommodations/' : '/main/guest/accommodations/') +
+          accommodation.id
+        : '/accommodations/' + accommodation.id;
 
     return (
         <Card className="accommodation-card">

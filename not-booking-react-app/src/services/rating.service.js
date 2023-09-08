@@ -1,47 +1,38 @@
 import axios from 'axios';
 import AuthService from './auth.service';
-const API_URL = 'http://localhost:8080/api/rating/';
+const API_URL = 'http://localhost:8082/api/rating/';
 
 const getAvgAccommodationScore = (accommodationId) => {
-    const headers = AuthService.authHeader(false);
-    return axios.get(API_URL + 'getAvgAccommodationScore/' + accommodationId, {
-        headers: headers,
-    });
+    return axios.get(API_URL + 'getAvgAccommodationScore/' + accommodationId);
 };
 
-const getAvgHostScore = (hostmail) => {
-    const headers = AuthService.authHeader(false);
-    return axios.get(API_URL + 'getAvgHostScore/' + hostmail, {
-        headers: headers,
-    });
+const getAvgHostScore = (hostUsername) => {
+    return axios.get(API_URL + 'getAvgHostScore/' + hostUsername);
 };
 
 const getAllAccommodationScores = (accommodationId) => {
-    const headers = AuthService.authHeader(false);
-    return axios.get(API_URL + 'getAllAccommodationScores/' + accommodationId, {
-        headers: headers,
-    });
+    return axios.get(API_URL + 'getAllAccommodationScores/' + accommodationId);
 };
 
-const getAllHostScores = (hostmail) => {
-    const headers = AuthService.authHeader(false);
-    return axios.get(API_URL + 'getAllHostScores/' + hostmail, {
-        headers: headers,
-    });
+const getAllHostScores = (hostUsername) => {
+    return axios.get(API_URL + 'getAllHostScores/' + hostUsername);
 };
 
 const getExistingAccommodationScore = (accommodationId) => {
     const headers = AuthService.authHeader(false);
-    let email = JSON.parse(localStorage.getItem('user')).email;
-    return axios.get(API_URL + 'getExistingAccommodationScore/' + email + '/' + accommodationId, {
-        headers: headers,
-    });
+    let username = JSON.parse(localStorage.getItem('user')).username;
+    return axios.get(
+        API_URL + 'getExistingAccommodationScore/' + username + '/' + accommodationId,
+        {
+            headers: headers,
+        }
+    );
 };
 
-const getExistingHostScore = (hostmail) => {
+const getExistingHostScore = (hostUsername) => {
     const headers = AuthService.authHeader(false);
-    let email = JSON.parse(localStorage.getItem('user')).email;
-    return axios.get(API_URL + 'getExistingHostScore/' + email + '/' + hostmail, {
+    let username = JSON.parse(localStorage.getItem('user')).username;
+    return axios.get(API_URL + 'getExistingHostScore/' + username + '/' + hostUsername, {
         headers: headers,
     });
 };

@@ -1,69 +1,57 @@
 import MainLayout from '../layout/MainLayout';
-import { lazy } from 'react';
-
-import Loadable from '../ui-component/Loadable.js';
 import Accommodations from '../views/shared-view/accommodations-view/Accommodations';
 import AccommodationView from '../views/shared-view/accommodations-view/accommodation-view/AccommodationView';
 import CreateRequest from '../views/guest-view/forms/CreateRequest';
 import RequestsForApprovingPage from '../views/host-view/pages/RequestsForApprovingPage';
 import TableRequestPage from '../views/guest-view/pages/TableRequestsPage';
 import TableReservationPage from '../views/guest-view/pages/TableReservationPage';
+import SamplePage from '../views/shared-view/sample-page';
+import UserProfile from '../views/shared-view/UserProfile';
+import CreateAccomodation from '../views/host-view/forms/CreateAccomodation/CreateAccomodation';
+import PriceTable from '../views/host-view/tabels/PriceTable';
+import UnavilabilityAccomodationTabel from '../views/host-view/tabels/UnavilabilityAccomodationTabel';
 
 // ==============================|| MAIN ROUTING ||============================== //
-const UnavilabilityAccomodationTabel = Loadable(
-    lazy(() => import('../views/host-view/tabels/UnavilabilityAccomodationTabel'))
-);
-const PriceTable = Loadable(lazy(() => import('../views/host-view/tabels/PriceTable')));
-const CreateAccomodation = Loadable(
-    lazy(() => import('../views/host-view/forms/CreateAccomodation/CreateAccomodation'))
-);
-const UserProfile = Loadable(lazy(() => import('../views/shared-view/UserProfile')));
 
 const MainRoutes = {
     path: '/main',
-    element: <MainLayout />,
+    element: <MainLayout allowedRoles={['HOST', 'GUEST']} />,
     children: [
         {
             path: '/main',
-            element: <Accommodations />,
+            element: <SamplePage />,
         },
-        {
-            path: 'accommodations',
-            children: [
-                {
-                    path: 'all',
-                    element: <Accommodations />,
-                },
-                {
-                    path: ':id',
-                    element: <AccommodationView />,
-                },
-                {
-                    path: 'create',
-                    element: <CreateAccomodation allowedRoles={['host']} />,
-                },
-            ],
-        },
-
         {
             path: 'host',
             children: [
                 {
-                    path: 'un',
-                    element: <UnavilabilityAccomodationTabel />,
+                    path: 'accommodations',
+                    children: [
+                        {
+                            path: 'all',
+                            element: <Accommodations />,
+                        },
+                        {
+                            path: ':id',
+                            element: <AccommodationView />,
+                        },
+                        {
+                            path: 'create',
+                            element: <CreateAccomodation />,
+                        },
+                    ],
                 },
                 {
-                    path: 'pricesTable',
-                    element: <PriceTable />,
+                    path: 'prices',
+                    element: <PriceTable allowedRoles={['HOST']} />,
                 },
                 {
-                    // mislim da ovde ide guest
-                    path: 'request',
-                    element: <CreateRequest />,
+                    path: 'requests',
+                    element: <RequestsForApprovingPage allowedRoles={['HOST']} />,
                 },
                 {
-                    path: 'request_page',
-                    element: <RequestsForApprovingPage />,
+                    path: 'unavaliability',
+                    element: <UnavilabilityAccomodationTabel allowedRoles={['HOST']} />,
                 },
             ],
         },
@@ -71,16 +59,29 @@ const MainRoutes = {
             path: 'guest',
             children: [
                 {
-                    path: 'table_request_page',
-                    element: <TableRequestPage />,
+                    path: 'accommodations',
+                    children: [
+                        {
+                            path: 'all',
+                            element: <Accommodations />,
+                        },
+                        {
+                            path: ':id',
+                            element: <AccommodationView />,
+                        },
+                    ],
                 },
                 {
-                    path: 'table_reservation_page',
-                    element: <TableReservationPage />,
+                    path: 'requests',
+                    element: <TableRequestPage allowedRoles={['GUEST']} />,
                 },
                 {
-                    path: 'request',
-                    element: <CreateRequest />,
+                    path: 'reservations',
+                    element: <TableReservationPage allowedRoles={['GUEST']} />,
+                },
+                {
+                    path: 'create',
+                    element: <CreateRequest allowedRoles={['GUEST']} />,
                 },
             ],
         },

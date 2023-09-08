@@ -87,6 +87,12 @@ const UnavilabilityAccomodationTabel = () => {
             );
         } catch (err) {
             if (scriptedRef.current) {
+                toaster.push(
+                    <Message showIcon type="error">
+                        {err}
+                    </Message>,
+                    { placement: 'topEnd' }
+                );
             }
         }
         setOpen(false);

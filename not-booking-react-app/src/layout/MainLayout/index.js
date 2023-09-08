@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
@@ -18,6 +18,7 @@ import { IconChevronRight } from '@tabler/icons';
 
 import { ModalProvider } from 'react-simple-modal-provider';
 import modals from '../../ui-component/modals/index';
+import { useState } from 'react';
 
 // styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -67,7 +68,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
 
 // ==============================|| MAIN LAYOUT ||============================== //
 
-const MainLayout = () => {
+const MainLayout = ({ allowedRoles }) => {
     const theme = useTheme();
     const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
     // Handle left drawer
@@ -76,8 +77,14 @@ const MainLayout = () => {
     const handleLeftDrawerToggle = () => {
         dispatch({ type: SET_MENU, opened: !leftDrawerOpened });
     };
+    const location = useLocation();
+    const [userType] = useState(
+        JSON.parse(localStorage.getItem('user'))
+            ? JSON.parse(localStorage.getItem('user')).userType
+            : ''
+    );
 
-    return (
+    return userType && allowedRoles?.includes(userType) ? (
         <ModalProvider value={modals}>
             <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
@@ -88,7 +95,7 @@ const MainLayout = () => {
                     color="inherit"
                     elevation={0}
                     sx={{
-                        zIndex: 0,
+                        zIndex: 1000,
                         bgcolor: theme.palette.background.default,
                         transition: leftDrawerOpened ? theme.transitions.create('width') : 'none',
                     }}
@@ -117,6 +124,8 @@ const MainLayout = () => {
                 </Main>
             </Box>
         </ModalProvider>
+    ) : (
+        <Navigate to="/login" state={{ from: location }} replace />
     );
 };
 
