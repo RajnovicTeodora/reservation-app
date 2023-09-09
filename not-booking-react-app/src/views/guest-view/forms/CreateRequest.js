@@ -25,7 +25,6 @@ import requestService from '../../../services/RequestService';
 import { useNavigate } from 'react-router-dom';
 import { useToaster } from 'rsuite/toaster';
 import { Message } from 'rsuite';
-import accomoddationService from '../../../services/AccomoddationService';
 import UserService from '../../../services/user.service';
 import NotificationService from '../../../services/notification.service';
 
@@ -35,34 +34,19 @@ const CreateRequest = ({ ...others }) => {
     const scriptedRef = useScriptRef();
     const toaster = useToaster();
 
-    const createNotification = (accomodationId) => {
-        accomoddationService.getHostUsernameByAccId(accomodationId, false).then(
-            (res) => {
-                //TODO check
-                UserService.checkNotification(res.data).then((response) => {
-                    if (response.data.type1) {
-                        NotificationService.createNotification(response.data.userId, 1).then(
-                            (error) => {
-                                toaster.push(
-                                    <Message showIcon type="error" closable>
-                                        {error.response.data}
-                                    </Message>,
-                                    { placement: 'topEnd' }
-                                );
-                            }
-                        );
-                    }
+    const createNotification = () => {
+        UserService.checkNotification(localStorage.hostUsername).then((response) => {
+            if (response.data.type1) {
+                NotificationService.createNotification(response.data.userId, 1).then((error) => {
+                    toaster.push(
+                        <Message showIcon type="error" closable>
+                            {error.response.data}
+                        </Message>,
+                        { placement: 'topEnd' }
+                    );
                 });
-            },
-            (err) => {
-                toaster.push(
-                    <Message showIcon type="error">
-                        {err.response.data}
-                    </Message>,
-                    { placement: 'topEnd' }
-                );
             }
-        );
+        });
     };
 
     return (
@@ -101,7 +85,7 @@ const CreateRequest = ({ ...others }) => {
                                         </Message>,
                                         { placement: 'topEnd' }
                                     );
-                                    createNotification(newRequest.accomodationId);
+                                    createNotification();
                                     navigate('/main');
                                     window.location.reload();
                                 } else {
