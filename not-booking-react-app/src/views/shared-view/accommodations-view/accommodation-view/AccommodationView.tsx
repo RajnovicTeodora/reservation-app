@@ -107,6 +107,7 @@ function AccommodationView() {
     };
     const reserveClick = () => {
         localStorage.accommodationId = accommodation ? accommodation.id : '';
+        localStorage.hostUsername = hostUsername;
         navigate('/main/guest/create');
     };
 
