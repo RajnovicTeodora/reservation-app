@@ -46,7 +46,7 @@ const PriceTable = ({ ...others }) => {
         const fetchData = async () => {
             try {
                 const response = await priceService.getListPricesByAccomodationId();
-                if (response.response.status === 200) {
+                if (response.status === 200) {
                     setRows(response.data);
                 }
             } catch (error) {
@@ -91,7 +91,9 @@ const PriceTable = ({ ...others }) => {
                                 <TableCell component="th" scope="row" align="center">
                                     {row.startDate}
                                 </TableCell>
-                                <TableCell align="center">{row.endDate}</TableCell>
+                                <TableCell align="center">
+                                    {row.endDate ? row.endDate : '/'}
+                                </TableCell>
                                 <TableCell component="th" scope="row" align="center">
                                     {row.price}
                                 </TableCell>
@@ -127,7 +129,7 @@ const PriceTable = ({ ...others }) => {
                                 };
                                 priceService.createPrice(newPrice).then(
                                     (resp) => {
-                                        if (resp.response.status === 200) {
+                                        if (resp.status === 200) {
                                             toaster.push(
                                                 <Message showIcon type="success">
                                                     Successfully created price!

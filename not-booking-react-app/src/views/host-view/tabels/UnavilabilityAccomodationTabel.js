@@ -59,7 +59,7 @@ const UnavilabilityAccomodationTabel = () => {
             };
             unavilailityService.createUnavilability(newUnavilability).then(
                 (resp) => {
-                    if (resp.response.status === 200) {
+                    if (resp.status === 200) {
                         toaster.push(
                             <Message showIcon type="success">
                                 Successfully created unavilability!
