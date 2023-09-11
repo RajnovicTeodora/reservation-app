@@ -43,6 +43,8 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import { Message } from 'rsuite';
 import { useToaster } from 'rsuite/toaster';
+import guestService from '../../../services/GuestService';
+import hostService from '../../../services/HostService';
 
 // ================================|| AUTH3 - REGISTER  ||================================ //
 
@@ -156,13 +158,63 @@ const Register = ({ ...others }) => {
                                                 values.streetNum
                                             ).then(
                                                 () => {
-                                                    toaster.push(
-                                                        <Message showIcon type="success">
-                                                            Successfully created an account!
-                                                        </Message>,
-                                                        { placement: 'topEnd' }
-                                                    );
-                                                    navigate('/login');
+                                                    if (values.role == 'GUEST') {
+                                                        guestService.addGuest(values.username).then(
+                                                            () => {
+                                                                toaster.push(
+                                                                    <Message
+                                                                        showIcon
+                                                                        type="success"
+                                                                    >
+                                                                        Successfully created an
+                                                                        account!
+                                                                    </Message>,
+                                                                    { placement: 'topEnd' }
+                                                                );
+                                                                navigate('/login');
+                                                            },
+                                                            (er) => {
+                                                                toaster.push(
+                                                                    <Message
+                                                                        showIcon
+                                                                        type="error"
+                                                                        closable
+                                                                    >
+                                                                        {er.response.data}
+                                                                    </Message>,
+                                                                    { placement: 'topEnd' }
+                                                                );
+                                                            }
+                                                        );
+                                                    } else if (values.role == 'HOST') {
+                                                        hostService.addHost(values.username).then(
+                                                            () => {
+                                                                toaster.push(
+                                                                    <Message
+                                                                        showIcon
+                                                                        type="success"
+                                                                    >
+                                                                        Successfully created an
+                                                                        account!
+                                                                    </Message>,
+                                                                    { placement: 'topEnd' }
+                                                                );
+                                                                navigate('/login');
+                                                            },
+                                                            (er) => {
+                                                                toaster.push(
+                                                                    <Message
+                                                                        showIcon
+                                                                        type="error"
+                                                                        closable
+                                                                    >
+                                                                        {er.response.data}
+                                                                    </Message>,
+                                                                    { placement: 'topEnd' }
+                                                                );
+                                                            }
+                                                        );
+                                                    }
                                                 },
                                                 (error) => {
                                                     const resMessage = error.response.data;
