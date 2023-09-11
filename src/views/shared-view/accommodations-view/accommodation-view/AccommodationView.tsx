@@ -84,7 +84,7 @@ function AccommodationView() {
 
     useEffect(() => {
         if (id) {
-            const findAccomodationsPromise = accommodationService.findById(parseInt(id));
+            const findAccomodationsPromise = accommodationService.findById(id);
             findAccomodationsPromise.then((result) => {
                 setAccommodation(result.data);
                 setHostUsername('host123'); //TODO teodora postavi username
@@ -135,32 +135,39 @@ function AccommodationView() {
                     )}
                 </div>
                 <p>{accommodation.description}</p>
-
                 <div className="address">
-                    <span>{accommodation.address}</span>
+                    <p>Address</p>
+                    <div className="info-item">
+                        <span className="label">Street:</span>
+                        <span className="value">{accommodation.address.street}</span>
+                    </div>
+                    <div className="info-item">
+                        <span className="label">City:</span>
+                        <span className="value">{accommodation.address.city}</span>
+                    </div>
+                    <div className="info-item">
+                        <span className="label">Number:</span>
+                        <span className="value">{accommodation.address.number}</span>
+                    </div>
                 </div>
-
                 <div className="photos">
                     {accommodation.photos.map((photo, index) => (
                         <img src={photo} alt={`Photo ${index + 1}`} key={index} />
                     ))}
                 </div>
-
                 <div className="benefits">
                     <h3>Benefits:</h3>
                     <ul>
-                        {accommodation.benefits.map((benefit, index) => (
+                        {accommodation.benefits.split(',').map((benefit, index) => (
                             <li key={index}>{benefit}</li>
                         ))}
                     </ul>
                 </div>
-
                 <div className="guests">
                     <span>
                         Guests: {accommodation.minGuests} - {accommodation.maxGuests}
                     </span>
                 </div>
-
                 <div className="approval">
                     <span>
                         {accommodation.automaticApproval ? 'Automatic Approval' : 'Manual Approval'}

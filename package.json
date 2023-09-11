@@ -42,6 +42,7 @@
         "rsuite": "^5.35.1",
         "sass": "^1.62.1",
         "styled-components": "^5.3.11",
+        "svgo": "^3.0.2",
         "web-vitals": "^2.1.4",
         "yup": "^1.2.0"
     },
@@ -74,6 +75,7 @@
     },
     "devDependencies": {
         "@babel/preset-typescript": "^7.22.5",
+        "@types/axios": "^0.14.0",
         "@types/bootstrap": "^5.2.6",
         "@types/react-bootstrap": "^0.32.32",
         "@types/react-truncate": "^2.3.4",

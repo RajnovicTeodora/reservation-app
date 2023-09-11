@@ -17,7 +17,7 @@ export class AbstractService<T extends DefaultModel> {
         return axios.get(this.url);
     }
 
-    findById(id: number): Promise<AxiosResponse<T>> {
+    findById(id: string): Promise<AxiosResponse<T>> {
         return axios.get(this.url + '/' + id);
     }
 }

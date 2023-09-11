@@ -1,11 +1,12 @@
+import { Address } from './address';
 import { DefaultModel } from './default-model';
 
 export class Accommodation extends DefaultModel {
     name: string;
     description: string;
-    address: string; // Todo maybe place the information inside a class
+    address: Address;
     photos: string[];
-    benefits: string[];
+    benefits: string;
     maxGuests: number;
     minGuests: number;
     automaticApproval: boolean;
@@ -13,13 +14,13 @@ export class Accommodation extends DefaultModel {
     averageScore = 0;
 
     constructor(
-        id: number,
+        id: string,
         deleted: boolean,
         name: string,
         description: string,
-        address: string,
+        address: Address,
         photos: string[],
-        benefits: string[],
+        benefits: string,
         maxGuests: number,
         minGuests: number,
         automaticApproval: boolean,

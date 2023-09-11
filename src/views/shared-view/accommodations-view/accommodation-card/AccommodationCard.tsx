@@ -4,7 +4,6 @@ import { Card } from 'react-bootstrap';
 import CardHeader from 'react-bootstrap/esm/CardHeader';
 import { FaInfo } from 'react-icons/fa';
 import { CardActions, CardContent, Typography } from '@mui/material';
-import Truncate from 'react-truncate';
 import { Link } from 'react-router-dom';
 
 function AccommodationCard(props: { accommodation: Accommodation }) {
@@ -28,8 +27,21 @@ function AccommodationCard(props: { accommodation: Accommodation }) {
                     variant="body2"
                     color="text.secondary"
                 >
-                    <Truncate lines={4}>{accommodation.description}</Truncate>
+                    {accommodation.address.number}, {accommodation.address.city},{' '}
+                    {accommodation.address.street}
                 </Typography>
+            </CardContent>
+            <CardContent>
+                <div className="gallery">
+                    {accommodation.photos.map((image: string, index: number) => (
+                        <img
+                            key={index}
+                            src={image}
+                            alt={`Image ${index + 1}`}
+                            className="gallery-image"
+                        />
+                    ))}
+                </div>
             </CardContent>
             <CardActions className="accommodation-card__actions" disableSpacing>
                 <Link to={url}>

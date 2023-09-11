@@ -1,8 +1,8 @@
 export class DefaultModel {
-    id: number;
+    id: string;
     deleted: boolean;
 
-    constructor(id: number, deleted: boolean) {
+    constructor(id: string, deleted: boolean) {
         this.id = id;
         this.deleted = deleted;
     }
