@@ -2,7 +2,7 @@ import axios from 'axios';
 const ENDPOINTS = {
     BASE: 'http://localhost:8081/api/reservation/',
     GET_BY_USER_ID: 'getByUserId/',
-    DELETE_REQUEST: 'cancelReservation/',
+    DELETE_REQUEST: 'cancelReservation',
     UPDATE_USERNAME: 'updateUsername/',
     CHECK_ACTIVE_RESERVATIONS: 'checkActiveReservations/',
     CHECK_FINISHED_RESERVATIONS: 'checkFinishedReservations/',
@@ -11,7 +11,7 @@ const ENDPOINTS = {
 class ReservationService {
     deleteReservation = async (id) => {
         try {
-            return await axios.put(ENDPOINTS.BASE + ENDPOINTS.DELETE_REQUEST + id);
+            return await axios.put(ENDPOINTS.BASE + ENDPOINTS.DELETE_REQUEST, id);
         } catch (error) {
             return error;
         }

@@ -17,7 +17,6 @@ import {
     DialogTitle,
 } from '@mui/material';
 import { Message } from 'rsuite';
-import accomoddationService from '../../../services/AccomoddationService';
 import UserService from '../../../services/user.service';
 import NotificationService from '../../../services/notification.service';
 
@@ -28,43 +27,28 @@ const TableReservationPage = () => {
     const [open, setOpen] = useState(false);
     const [dialogText, setDialogText] = useState('');
     const [requestId, setRequestId] = useState('');
-    const [accName, setAccName] = useState('');
+    const [hostUsername, setHostUsername] = useState('');
 
     const createNotification = () => {
-        accomoddationService.getHostUsernameByAccId(accName, true).then(
-            (res) => {
-                //TODO check
-                UserService.checkNotification(res.data).then((response) => {
-                    if (response.data.type2) {
-                        NotificationService.createNotification(response.data.userId, 2).then(
-                            (error) => {
-                                toaster.push(
-                                    <Message showIcon type="error" closable>
-                                        {error.response.data}
-                                    </Message>,
-                                    { placement: 'topEnd' }
-                                );
-                            }
-                        );
-                    }
+        UserService.checkNotification(hostUsername).then((response) => {
+            if (response.data.type2) {
+                NotificationService.createNotification(response.data.userId, 2).then((error) => {
+                    toaster.push(
+                        <Message showIcon type="error" closable>
+                            {error.response.data}
+                        </Message>,
+                        { placement: 'topEnd' }
+                    );
                 });
-            },
-            (err) => {
-                toaster.push(
-                    <Message showIcon type="error">
-                        {err.response.data}
-                    </Message>,
-                    { placement: 'topEnd' }
-                );
             }
-        );
+        });
     };
 
-    const handleOpen = (text, id, accommodationName) => {
+    const handleOpen = (text, id, hostUsername) => {
         setRequestId(id);
         setDialogText(text);
         setOpen(true);
-        setAccName(accommodationName);
+        setHostUsername(hostUsername);
     };
     const handleAgree = () => {
         reservationService.deleteReservation(requestId).then((res) => {
@@ -163,7 +147,7 @@ const TableReservationPage = () => {
                                             handleOpen(
                                                 'Are you sure you want to delete this request?',
                                                 row.id,
-                                                row.accomodation.name
+                                                row.hostUsername
                                             );
                                         }}
                                     >
