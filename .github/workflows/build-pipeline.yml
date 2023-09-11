@@ -1,0 +1,47 @@
+name: Build React App
+
+on:
+  push:
+    branches:
+      - develop 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14 
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build App
+        run: npm run build
+
+      - name: Run Tests (if you have tests)
+        run: npm test
+
+      - name: Check Build Status
+        run: |
+          if [ -d "build" ]; then
+            echo "Build successful!"
+          else
+            echo "Build failed. Please check your code and try again."
+            exit 1
+          fi
+
+  prevent-merge:
+    runs-on: ubuntu-latest
+    if: failure()
+    
+    steps:
+      - name: Prevent Merge on Build Failure
+        run: |
+          echo "Build failed. Merging is not allowed until the build passes." >&2
+          exit 1
