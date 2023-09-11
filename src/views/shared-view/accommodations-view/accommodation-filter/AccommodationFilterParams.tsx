@@ -2,7 +2,7 @@ export class AccommodationFilterParams {
     country: string;
     city: string;
     address: string;
-    guests: string;
+    guests: number;
     fromDate: string;
     toDate: string;
 
@@ -10,7 +10,7 @@ export class AccommodationFilterParams {
         this.country = '';
         this.city = '';
         this.address = '';
-        this.guests = '';
+        this.guests = 0;
         this.fromDate = '';
         this.toDate = '';
     }

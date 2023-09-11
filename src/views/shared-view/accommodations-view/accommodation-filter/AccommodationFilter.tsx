@@ -2,6 +2,7 @@ import './AccommodationFilter.scss';
 import React, { useCallback, useState } from 'react';
 import { AccommodationFilterParams } from './AccommodationFilterParams';
 
+// eslint-disable-next-line no-unused-vars
 function AccommodationFilter(props: { setFilter: (filter: AccommodationFilterParams) => void }) {
     const { setFilter } = props;
     const [accommodationFilter, setAccommodationFilter] = useState<AccommodationFilterParams>(
@@ -26,16 +27,6 @@ function AccommodationFilter(props: { setFilter: (filter: AccommodationFilterPar
 
     return (
         <div className="filter-bar">
-            <div className="filter-group">
-                <label htmlFor="country">Country:</label>
-                <input
-                    type="text"
-                    id="country"
-                    name="country"
-                    value={accommodationFilter.country}
-                    onChange={handleInputChange}
-                />
-            </div>
             <div className="filter-group">
                 <label htmlFor="city">City:</label>
                 <input

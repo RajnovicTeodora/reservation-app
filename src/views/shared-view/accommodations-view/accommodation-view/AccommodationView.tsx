@@ -84,7 +84,7 @@ function AccommodationView() {
 
     useEffect(() => {
         if (id) {
-            const findAccomodationsPromise = accommodationService.findById(parseInt(id));
+            const findAccomodationsPromise = accommodationService.findById(id);
             findAccomodationsPromise.then((result) => {
                 setAccommodation(result.data);
                 setHostUsername('host123'); //TODO teodora postavi username
@@ -145,8 +145,8 @@ function AccommodationView() {
                         <span className="value">{accommodation.address.city}</span>
                     </div>
                     <div className="info-item">
-                        <span className="label">Country:</span>
-                        <span className="value">{accommodation.address.country}</span>
+                        <span className="label">Number:</span>
+                        <span className="value">{accommodation.address.number}</span>
                     </div>
                 </div>
                 <div className="photos">
@@ -157,7 +157,7 @@ function AccommodationView() {
                 <div className="benefits">
                     <h3>Benefits:</h3>
                     <ul>
-                        {accommodation.benefits.map((benefit, index) => (
+                        {accommodation.benefits.split(',').map((benefit, index) => (
                             <li key={index}>{benefit}</li>
                         ))}
                     </ul>

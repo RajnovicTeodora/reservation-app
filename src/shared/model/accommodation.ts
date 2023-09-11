@@ -6,7 +6,7 @@ export class Accommodation extends DefaultModel {
     description: string;
     address: Address;
     photos: string[];
-    benefits: string[];
+    benefits: string;
     maxGuests: number;
     minGuests: number;
     automaticApproval: boolean;
@@ -14,13 +14,13 @@ export class Accommodation extends DefaultModel {
     averageScore = 0;
 
     constructor(
-        id: number,
+        id: string,
         deleted: boolean,
         name: string,
         description: string,
         address: Address,
         photos: string[],
-        benefits: string[],
+        benefits: string,
         maxGuests: number,
         minGuests: number,
         automaticApproval: boolean,

@@ -9,11 +9,7 @@ export class AccommodationService extends AbstractService<Accommodation> {
     }
 
     filterAll(params: AccommodationFilterParams): Promise<AxiosResponse<Accommodation[]>> {
-        return axios.get(this.url + '/filter', {
-            params: {
-                accommodationFilterParams: params,
-            },
-        });
+        return axios.post(this.url + '/filter', params);
     }
 }
 

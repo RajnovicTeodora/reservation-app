@@ -5,22 +5,22 @@ export class Address extends DefaultModel {
     city: string;
     // state: string;
     // postalCode: string;
-    country: string;
+    number: string;
 
     constructor(
-        id: number,
+        id: string,
         deleted: boolean,
         street: string,
         city: string,
         // state: string,
         // postalCode: string,
-        country: string
+        number: string
     ) {
         super(id, deleted);
         this.street = street;
         this.city = city;
         // this.state = state;
         // this.postalCode = postalCode;
-        this.country = country;
+        this.number = number;
     }
 }
