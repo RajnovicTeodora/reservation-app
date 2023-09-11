@@ -131,7 +131,7 @@ const Login = ({ ...others }) => {
                                                 (error) => {
                                                     toaster.push(
                                                         <Message showIcon type="error" closable>
-                                                            {error.response}
+                                                            {error.response.data}
                                                         </Message>,
                                                         { placement: 'topEnd' }
                                                     );
