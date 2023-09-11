@@ -67,55 +67,63 @@ const CreateAccomodation = ({ ...others }) => {
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
-                        selectedPhotos.forEach((photo) => {
-                            let fileReader = new FileReader();
-                            fileReader.readAsDataURL(photo);
-                            fileReader.onload = (event) => {
-                                values.listPhotos.push(event.target.result);
-                            };
+                        const photoPromises = selectedPhotos.map((photo) => {
+                            return new Promise((resolve) => {
+                                let fileReader = new FileReader();
+                                fileReader.readAsDataURL(photo);
+                                fileReader.onload = (event) => {
+                                    values.listPhotos.push(event.target.result);
+                                    resolve(event.target.result);
+                                };
+                            });
                         });
-                        const newAccomodation = {
-                            name: values.name,
-                            maxGuest: values.maxGuest,
-                            minGuest: values.minGuest,
-                            automaticApproal: values.automaticApproal,
-                            benefits: values.benefits,
-                            listPhotos: values.listPhotos,
-                            addres: {
-                                street: values.street,
-                                number: values.number,
-                                city: values.city,
-                            },
-                        };
-                        accomoddationService.createAccomodation(newAccomodation).then(
-                            () => {
-                                toaster.push(
-                                    <Message showIcon type="success">
-                                        Successfully added accommodation!
-                                    </Message>,
-                                    { placement: 'topEnd' }
-                                );
-                                navigate('/main');
-                                window.location.reload();
-                            },
-                            (error) => {
-                                setStatus({ success: false });
-                                setErrors({ submit: error.response.data });
-                                setSubmitting(false);
-                                const resMessage = error.response.data;
-                                toaster.push(
-                                    <Message showIcon type="error" closable>
-                                        {resMessage}
-                                    </Message>,
-                                    { placement: 'topEnd' }
-                                );
-                            }
-                        );
+                        Promise.all(photoPromises).then(() => {
+                            const newAccomodation = {
+                                name: values.name,
+                                maxGuest: values.maxGuest,
+                                minGuest: values.minGuest,
+                                automaticApproal: values.automaticApproal,
+                                benefits: values.benefits,
+                                listPhotos: values.listPhotos,
+                                username: localStorage.username
+                                    ? localStorage.username
+                                    : localStorage.user.split('username":"')[1].split('"')[0],
+                                addres: {
+                                    street: values.street,
+                                    number: values.number,
+                                    city: values.city,
+                                },
+                            };
+                            accomoddationService.createAccomodation(newAccomodation).then(
+                                () => {
+                                    toaster.push(
+                                        <Message showIcon type="success">
+                                            Successfully added accommodation!
+                                        </Message>,
+                                        { placement: 'topEnd' }
+                                    );
+                                    navigate('/main');
+                                    window.location.reload();
+                                },
+                                (error) => {
+                                    setStatus({ success: false });
+                                    setErrors({ submit: error.response.data });
+                                    setSubmitting(false);
+                                    const resMessage = error.response.data;
+                                    toaster.push(
+                                        <Message showIcon type="error" closable>
+                                            {resMessage}
+                                        </Message>,
+                                        { placement: 'topEnd' }
+                                    );
+                                }
+                            );
 
-                        if (scriptedRef.current) {
-                            setStatus({ success: true });
-                            setSubmitting(false);
-                        }
+                            if (scriptedRef.current) {
+                                setStatus({ success: true });
+                                setSubmitting(false);
+                            }
+                        });
                     } catch (err) {
                         if (scriptedRef.current) {
                             setStatus({ success: false });
