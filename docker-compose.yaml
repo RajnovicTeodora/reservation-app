@@ -81,14 +81,14 @@ services:
       - MONGODB_HOST=mongodb
     networks:
       - not-booking
-  frontend:
-    build:
-      context: ./
-      dockerfile: Dockerfile  
-    ports:
-      - 3000:3000
-    networks:
-      - not-booking
+  # frontend:
+  #   build:
+  #     context: ./
+  #     dockerfile: Dockerfile  
+  #   ports:
+  #     - 3000:3000
+  #   networks:
+  #     - not-booking
 
 volumes:
   postgres_data:
